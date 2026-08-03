@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="ProjectAoVoVan:war exploded">
-    <output-path>$PROJECT_DIR$/target/AoVoVanShirts</output-path>
+    <output-path>$PROJECT_DIR$/target/assignment</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -14,18 +14,14 @@
           <element id="module-output" name="ProjectAoVoVan" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2" />
           <element id="library" level="project" name="Maven: jakarta.el:jakarta.el-api:5.0.0" />
           <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1" />
-          <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:12.6.1.jre11" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.17.0" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.17.0" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.17.0" />
-          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.14.9" />
+          <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:12.10.0.jre11" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/AoVoVanShirts/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/assignment/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="ProjectAoVoVan/web/Web" />
     </root>

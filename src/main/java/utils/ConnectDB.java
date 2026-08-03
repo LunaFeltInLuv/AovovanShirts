@@ -10,8 +10,8 @@ public class ConnectDB {
     public static Connection getConnect() {
         // Thay tên database, tài khoản và mật khẩu theo máy của nhóm.
         String strDbUrl = "jdbc:sqlserver://localhost:1433;"
-                + "databaseName=YOUR_DATABASE;"
-                + "user=sa;password=YOUR_PASSWORD;"
+                + "databaseName=aovovan_db;"
+                + "user=sa;password=1234;"
                 + "encrypt=true;trustServerCertificate=true";
 
         try {
