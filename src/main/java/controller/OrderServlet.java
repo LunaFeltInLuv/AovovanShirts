@@ -35,7 +35,11 @@ public class OrderServlet extends HttpServlet {
                     Order order = orderDAO.getOrderById(orderId);
                     if (order != null && (order.getUserId() == user.getId())) {
                         req.setAttribute("order", order);
-                        req.getRequestDispatcher("/order-detail.jsp").forward(req, resp);
+                        req.setAttribute("pageTitle", "Chi tiết đơn hàng #" + orderId + " - Áo Vớ Vẩn");
+                        req.setAttribute("activePage", "orders");
+                        req.setAttribute("contentPage", "/WEB-INF/views/client/pages/order-detail.jsp");
+
+                        req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
                         return;
                     }
                 } catch (NumberFormatException ignored) {}
@@ -44,7 +48,11 @@ public class OrderServlet extends HttpServlet {
         } else {
             List<Order> orders = orderDAO.getOrdersByUserId(user.getId());
             req.setAttribute("orders", orders);
-            req.getRequestDispatcher("/orders.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Lịch sử đơn hàng - Áo Vớ Vẩn");
+            req.setAttribute("activePage", "orders");
+            req.setAttribute("contentPage", "/WEB-INF/views/client/pages/orders.jsp");
+
+            req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
         }
     }
 }

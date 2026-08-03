@@ -27,7 +27,10 @@ public class ProductServlet extends HttpServlet {
                     Product product = productDAO.getProductById(id);
                     if (product != null) {
                         req.setAttribute("product", product);
-                        req.getRequestDispatcher("/product-detail.jsp").forward(req, resp);
+                        req.setAttribute("pageTitle", product.getName() + " - Áo Vớ Vẩn");
+                        req.setAttribute("activePage", "products");
+                        req.setAttribute("contentPage", "/WEB-INF/views/client/pages/product-detail.jsp");
+                        req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
                         return;
                     }
                 } catch (NumberFormatException ignored) {}
@@ -51,8 +54,11 @@ public class ProductServlet extends HttpServlet {
             req.setAttribute("keyword", keyword);
             req.setAttribute("category", category);
             req.setAttribute("page", page);
+            req.setAttribute("pageTitle", "Cửa hàng sản phẩm - Áo Vớ Vẩn");
+            req.setAttribute("activePage", "products");
+            req.setAttribute("contentPage", "/WEB-INF/views/client/pages/products.jsp");
 
-            req.getRequestDispatcher("/products.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
         }
     }
 }

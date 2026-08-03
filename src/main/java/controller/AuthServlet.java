@@ -28,9 +28,11 @@ public class AuthServlet extends HttpServlet {
         }
 
         if ("/login".equals(path)) {
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Đăng nhập - Áo Vớ Vẩn");
+            req.getRequestDispatcher("/WEB-INF/views/client/pages/login.jsp").forward(req, resp);
         } else if ("/register".equals(path)) {
-            req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Đăng ký tài khoản - Áo Vớ Vẩn");
+            req.getRequestDispatcher("/WEB-INF/views/client/pages/register.jsp").forward(req, resp);
         }
     }
 
@@ -54,15 +56,15 @@ public class AuthServlet extends HttpServlet {
         if (user != null && password != null && password.equals(user.getPassword_hash())) {
             if (Boolean.FALSE.equals(user.getActive())) {
                 req.setAttribute("error", "Tài khoản của bạn đã bị khóa!");
-                req.getRequestDispatcher("/login.jsp").forward(req, resp);
+                doGet(req, resp);
                 return;
             }
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/products");
+            resp.sendRedirect(req.getContextPath() + "/home");
         } else {
             req.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác!");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            doGet(req, resp);
         }
     }
 
@@ -83,12 +85,12 @@ public class AuthServlet extends HttpServlet {
         user.setAddress(address);
         user.setActive(true);
 
-        int userId = userDAO.addUser(user, null); // Default role: 'user'
+        int userId = userDAO.addUser(user, null);
         if (userId > 0) {
             resp.sendRedirect(req.getContextPath() + "/login?registered=true");
         } else {
-            req.setAttribute("error", "Đăng ký thất bại! Kiểm tra thông tin đầu vào (username/email có thể đã tồn tại).");
-            req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            req.setAttribute("error", "Đăng ký thất bại! Kiểm tra thông tin (username/email có thể đã tồn tại).");
+            doGet(req, resp);
         }
     }
 }

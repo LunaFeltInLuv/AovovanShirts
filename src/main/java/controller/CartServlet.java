@@ -29,7 +29,11 @@ public class CartServlet extends HttpServlet {
         int cartId = cartDAO.getCartIdByUserId(user.getId());
         List<CartItem> items = cartDAO.getCartItems(cartId);
         req.setAttribute("cartItems", items);
-        req.getRequestDispatcher("/cart.jsp").forward(req, resp);
+        req.setAttribute("pageTitle", "Giỏ hàng của bạn - Áo Vớ Vẩn");
+        req.setAttribute("activePage", "cart");
+        req.setAttribute("contentPage", "/WEB-INF/views/client/pages/cart.jsp");
+
+        req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
     }
 
     @Override

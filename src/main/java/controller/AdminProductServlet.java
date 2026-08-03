@@ -22,18 +22,27 @@ public class AdminProductServlet extends HttpServlet {
         if ("/admin/products".equals(path)) {
             List<Product> products = productDAO.getAllProducts();
             req.setAttribute("products", products);
-            req.getRequestDispatcher("/admin/products.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Quản lý sản phẩm");
+            req.setAttribute("activePage", "products");
+            req.setAttribute("contentPage", "/WEB-INF/views/admin/products/products.jsp");
+            req.getRequestDispatcher("/WEB-INF/views/admin/layout/layout.jsp").forward(req, resp);
         } else if ("/admin/products/update".equals(path)) {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
                 Product product = productDAO.getProductById(id);
                 req.setAttribute("product", product);
-                req.getRequestDispatcher("/admin/product-form.jsp").forward(req, resp);
+                req.setAttribute("pageTitle", "Cập nhật sản phẩm #" + id);
+                req.setAttribute("activePage", "products");
+                req.setAttribute("contentPage", "/WEB-INF/views/admin/products/product-form.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/layout/layout.jsp").forward(req, resp);
             } catch (Exception e) {
                 resp.sendRedirect(req.getContextPath() + "/admin/products");
             }
         } else if ("/admin/products/add".equals(path)) {
-            req.getRequestDispatcher("/admin/product-form.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Thêm sản phẩm mới");
+            req.setAttribute("activePage", "products");
+            req.setAttribute("contentPage", "/WEB-INF/views/admin/products/product-form.jsp");
+            req.getRequestDispatcher("/WEB-INF/views/admin/layout/layout.jsp").forward(req, resp);
         }
     }
 

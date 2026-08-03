@@ -29,7 +29,10 @@ public class AdminUserServlet extends HttpServlet {
             }
             List<User> users = userDAO.getUsers(keyword, roleId, null, 1, 50);
             req.setAttribute("users", users);
-            req.getRequestDispatcher("/admin/users.jsp").forward(req, resp);
+            req.setAttribute("pageTitle", "Quản lý tài khoản");
+            req.setAttribute("activePage", "users");
+            req.setAttribute("contentPage", "/WEB-INF/views/admin/users/users.jsp");
+            req.getRequestDispatcher("/WEB-INF/views/admin/layout/layout.jsp").forward(req, resp);
         }
     }
 

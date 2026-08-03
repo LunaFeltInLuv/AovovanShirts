@@ -48,7 +48,11 @@ public class CheckoutServlet extends HttpServlet {
 
         req.setAttribute("cartItems", items);
         req.setAttribute("totalAmount", total);
-        req.getRequestDispatcher("/checkout.jsp").forward(req, resp);
+        req.setAttribute("pageTitle", "Thanh toán đơn hàng - Áo Vớ Vẩn");
+        req.setAttribute("activePage", "checkout");
+        req.setAttribute("contentPage", "/WEB-INF/views/client/pages/checkout.jsp");
+
+        req.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(req, resp);
     }
 
     @Override
