@@ -1,21 +1,25 @@
 package dao;
 
-import model.Product;
-import utils.ConnectDB;
-
-import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Product;
+import utils.ConnectDB;
 
 public class ProductDAO {
 
     public List<Product> getAllProducts() {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM products WHERE is_active = 1 ORDER BY created_at DESC";
-        try (Connection con = ConnectDB.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = ConnectDB.getConnect()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(mapResultSetToProduct(rs));
             }
