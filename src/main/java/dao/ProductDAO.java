@@ -29,6 +29,21 @@ public class ProductDAO {
         return list;
     }
 
+    public List<Product> getAllProductsAdmin() {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM products ORDER BY created_at DESC";
+        try (Connection con = ConnectDB.getConnect()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToProduct(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public Product getProductById(int id) {
         String sql = "SELECT * FROM products WHERE id = ?";
         try (Connection con = ConnectDB.getConnect();
@@ -140,11 +155,23 @@ public class ProductDAO {
     public boolean deleteProduct(int productId, boolean forceDelete) {
         String sql = "{call sp_delete_product(?, ?)}";
         try (Connection con = ConnectDB.getConnect();
-             CallableStatement cs = con.prepareCall(sql)) {
+            CallableStatement cs = con.prepareCall(sql)) {
             cs.setInt(1, productId);
             cs.setBoolean(2, forceDelete);
             cs.execute();
             return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean restoreProduct(int productId) {
+        String sql = "UPDATE products SET is_active = 1 WHERE id = ?";
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

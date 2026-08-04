@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="ProjectAoVoVan:war exploded">
-    <output-path>$PROJECT_DIR$/target/assignment</output-path>
+    <output-path>$PROJECT_DIR$/target/aovovan</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -21,7 +21,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/assignment/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/aovovan/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="ProjectAoVoVan/web/Web" />
     </root>

@@ -58,7 +58,7 @@
 
 
     <build>
-        <finalName>assignment</finalName>
+        <finalName>aovovan</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

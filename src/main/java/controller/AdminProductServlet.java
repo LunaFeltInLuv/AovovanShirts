@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/admin/products", "/admin/products/add", "/admin/products/update", "/admin/products/delete"})
+@WebServlet(urlPatterns = {"/admin/products", "/admin/products/add", "/admin/products/update", "/admin/products/delete", "/admin/products/restore"})
 public class AdminProductServlet extends HttpServlet {
     private ProductDAO productDAO = new ProductDAO();
 
@@ -20,7 +20,7 @@ public class AdminProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
         if ("/admin/products".equals(path)) {
-            List<Product> products = productDAO.getAllProducts();
+            List<Product> products = productDAO.getAllProductsAdmin();
             req.setAttribute("products", products);
             req.setAttribute("pageTitle", "Quản lý sản phẩm");
             req.setAttribute("activePage", "products");
@@ -69,6 +69,14 @@ public class AdminProductServlet extends HttpServlet {
                 int id = Integer.parseInt(req.getParameter("id"));
                 boolean force = "true".equalsIgnoreCase(req.getParameter("force"));
                 productDAO.deleteProduct(id, force);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            resp.sendRedirect(req.getContextPath() + "/admin/products");
+        } else if ("/admin/products/restore".equals(path)) {
+            try {
+                int id = Integer.parseInt(req.getParameter("id"));
+                productDAO.restoreProduct(id);
             } catch (Exception e) {
                 e.printStackTrace();
             }
