@@ -1,4 +1,5 @@
 package controller;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import model.User;
 import utils.ConnectDB;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -32,11 +32,8 @@ public class Main {
                 Timestamp createAt = rs.getTimestamp("created_at");
                 Timestamp updateAt = rs.getTimestamp("updated_at");
 
-
-                User temp = new User(id, username, password_hash, name, phone,email,profilePictureURL,address,isActive,createAt,updateAt);
-
+                User temp = new User(id, username, password_hash, name, phone, email, profilePictureURL, address, isActive, createAt, updateAt);
                 userList.add(temp);
-
             }
         } catch (SQLException e) {
             e.getMessage();

@@ -99,7 +99,9 @@
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
                             <span class="text-white-50 small">Xin chào, <strong class="text-white"><c:out value="${sessionScope.user.name}"/></strong></span>
-                            <a class="btn btn-outline-light btn-sm font-semibold" href="<c:url value='/admin/products' />"><i class="bi bi-speedometer2 me-1"></i> Quản trị</a>
+                            <c:if test="${sessionScope.isAdmin eq true}">
+                                <a class="btn btn-outline-light btn-sm font-semibold" href="<c:url value='/admin/products' />"><i class="bi bi-speedometer2 me-1"></i> Quản trị</a>
+                            </c:if>
                             <a class="btn btn-danger btn-sm font-semibold" href="<c:url value='/logout' />"><i class="bi bi-box-arrow-right me-1"></i> Thoát</a>
                         </c:when>
                         <c:otherwise>
@@ -122,7 +124,72 @@
         </div>
     </footer>
 
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1090;">
+        <div id="cartToast" class="toast align-items-center text-white bg-dark border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center py-3 fs-6 font-semibold">
+                    <i id="toastIcon" class="bi bi-check-circle-fill text-warning me-2 fs-5"></i>
+                    <span id="toastMessage">Đã thêm sản phẩm vào giỏ hàng thành công!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script src="<c:url value='/assets/js/bootstrap.bundle.min.js' />"></script>
     <script src="<c:url value='/assets/js/app.js' />"></script>
+    <script>
+        function showToast(message, isSuccess = true) {
+            const toastEl = document.getElementById('cartToast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            if (toastMsg) toastMsg.textContent = message;
+            if (toastIcon) {
+                toastIcon.className = isSuccess 
+                    ? 'bi bi-check-circle-fill text-warning me-2 fs-5' 
+                    : 'bi bi-exclamation-triangle-fill text-danger me-2 fs-5';
+            }
+
+            if (toastEl && window.bootstrap) {
+                const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+                toast.show();
+            }
+        }
+
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (form && form.getAttribute('action') && form.getAttribute('action').includes('/cart/add')) {
+                e.preventDefault();
+                const formData = new URLSearchParams(new FormData(form));
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData.toString()
+                })
+                .then(res => {
+                    if (res.redirected && res.url.includes('/login')) {
+                        window.location.href = res.url;
+                        return null;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data) {
+                        showToast(data.message || 'Đã thêm sản phẩm vào giỏ hàng!', data.success);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast('Đã thêm sản phẩm vào giỏ hàng thành công!', true);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

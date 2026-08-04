@@ -67,6 +67,13 @@ public class CartItem {
         this.product = product;
     }
 
+    public java.math.BigDecimal getLineTotal() {
+        if (product != null && product.getPrice() != null) {
+            return product.getPrice().multiply(new java.math.BigDecimal(quantity));
+        }
+        return java.math.BigDecimal.ZERO;
+    }
+
     @Override
     public String toString() {
         return "CartItem{" +

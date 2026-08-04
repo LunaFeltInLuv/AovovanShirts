@@ -61,6 +61,18 @@ public class AuthServlet extends HttpServlet {
             }
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
+
+            java.util.List<model.Role> roles = userDAO.getUserRoles(user.getId());
+            boolean isAdmin = false;
+            if (roles != null) {
+                for (model.Role r : roles) {
+                    if ("admin".equalsIgnoreCase(r.getName()) || "product_manager".equalsIgnoreCase(r.getName())) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+            session.setAttribute("isAdmin", isAdmin);
             resp.sendRedirect(req.getContextPath() + "/home");
         } else {
             req.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác!");

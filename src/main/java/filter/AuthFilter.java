@@ -12,7 +12,7 @@ import dao.UserDAO;
 import java.io.IOException;
 import java.util.List;
 
-@WebFilter(urlPatterns = {"/cart/*", "/checkout/*", "/orders/*", "/admin/*"})
+@WebFilter(urlPatterns = {"/*"})
 public class AuthFilter implements Filter {
     private UserDAO userDAO = new UserDAO();
 
@@ -25,24 +25,33 @@ public class AuthFilter implements Filter {
         User user = (session != null) ? (User) session.getAttribute("user") : null;
         String path = req.getServletPath();
 
-        // 1. Yêu cầu đăng nhập
-        if (user == null) {
+        if (user != null && session != null) {
+            if (session.getAttribute("isAdmin") == null) {
+                List<Role> roles = userDAO.getUserRoles(user.getId());
+                boolean isAdmin = false;
+                if (roles != null) {
+                    for (Role r : roles) {
+                        if ("admin".equalsIgnoreCase(r.getName()) || "product_manager".equalsIgnoreCase(r.getName())) {
+                            isAdmin = true;
+                            break;
+                        }
+                    }
+                }
+                session.setAttribute("isAdmin", isAdmin);
+            }
+        }
+
+        // Protected paths require login
+        boolean isProtected = path.startsWith("/cart") || path.startsWith("/checkout") || path.startsWith("/orders") || path.startsWith("/admin");
+        if (isProtected && user == null) {
             resp.sendRedirect(req.getContextPath() + "/login?error=auth_required");
             return;
         }
 
-        // 2. Yêu cầu quyền Admin / Product Manager khi truy cập /admin/*
+        // Admin paths require admin or product_manager role
         if (path.startsWith("/admin")) {
-            List<Role> roles = userDAO.getUserRoles(user.getId());
-            boolean isAdminOrManager = false;
-            for (Role r : roles) {
-                if ("admin".equalsIgnoreCase(r.getName()) || "product_manager".equalsIgnoreCase(r.getName())) {
-                    isAdminOrManager = true;
-                    break;
-                }
-            }
-
-            if (!isAdminOrManager) {
+            Boolean isAdmin = (session != null) ? (Boolean) session.getAttribute("isAdmin") : false;
+            if (isAdmin == null || !isAdmin) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập khu vực quản trị!");
                 return;
             }
