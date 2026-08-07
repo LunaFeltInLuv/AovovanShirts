@@ -402,8 +402,8 @@
     </footer>
 
     <!-- Toast Notification Container -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1090;">
-        <div id="cartToast" class="toast align-items-center text-white bg-dark border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090; pointer-events: none;">
+        <div id="cartToast" class="toast align-items-center text-white bg-dark border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: auto;">
             <div class="d-flex">
                 <div class="toast-body d-flex align-items-center py-3 fs-6 font-semibold">
                     <i id="toastIcon" class="bi bi-check-circle-fill text-warning me-2 fs-5"></i>
