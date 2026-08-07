@@ -14,179 +14,164 @@
     <link rel="stylesheet" href="<c:url value='/assets/vendors/bootstrap-icons/bootstrap-icons.css' />">
     <link rel="stylesheet" href="<c:url value='/assets/css/app.css' />">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F43F5E 0%, #8B5CF6 100%);
+            --primary-color: #8B5CF6;
+            --primary-color-hover: #7C3AED;
+            --accent-color: #F43F5E;
+            --surface-color: #FFFFFF;
+            --bg-color: #F8FAFC;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
         body {
-            font-family: 'Nunito', 'Montserrat', sans-serif;
-            background-color: #F8FAFC;
-            color: #0F172A;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            color: #0F172A;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
         }
         
         /* Modern Minimalist Header Bar */
         .site-header {
-            background-color: #0F172A !important;
-            border-bottom: 2px solid #64748B;
+            background-color: var(--surface-color) !important;
+            border-bottom: 1px solid var(--border-color);
             height: auto !important;
-            min-height: 70px;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            min-height: 76px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             transition: all 0.2s ease;
         }
         .nav-link {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 0.95rem;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-            color: #F8FAFC !important;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            color: var(--text-muted) !important;
         }
         .nav-link:hover {
-            color: #CBD5E1 !important;
+            color: var(--primary-color) !important;
         }
         .nav-link.active {
-            background-color: #475569 !important;
+            background: var(--primary-gradient) !important;
             color: #FFFFFF !important;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(71, 85, 105, 0.35);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
         }
-        .text-warning {
-            color: #CBD5E1 !important;
+        
+        /* Logo Text Gradient */
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -0.05em;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
 
-        /* Solid Color Buttons with Light Drop Shadows */
+        /* Gen Z Buttons */
         .btn {
-            border-radius: 8px;
+            border-radius: 12px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            border: none;
         }
         .btn:hover {
-            transform: translateY(-1px);
+            transform: translateY(-3px);
         }
         .btn:active {
             transform: translateY(0);
         }
 
-        /* Primary Button: Solid Smoky Gray */
+        /* Primary Button: Gradient */
         .btn-warning {
-            background-color: #475569 !important;
-            border-color: #475569 !important;
+            background: var(--primary-gradient) !important;
             color: #FFFFFF !important;
-            box-shadow: 0 2px 6px rgba(71, 85, 105, 0.28) !important;
+            box-shadow: 0 6px 16px -4px rgba(139, 92, 246, 0.4) !important;
         }
         .btn-warning:hover {
-            background-color: #334155 !important;
-            border-color: #334155 !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.35) !important;
+            box-shadow: 0 10px 20px -4px rgba(244, 63, 94, 0.4) !important;
         }
 
-        /* Secondary Outline Button: Solid White with Smoky Gray Border */
+        /* Secondary Outline Button */
         .btn-outline-warning {
-            background-color: #FFFFFF !important;
-            border: 1.5px solid #64748B !important;
-            color: #475569 !important;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+            background-color: var(--surface-color) !important;
+            border: 2px solid var(--primary-color) !important;
+            color: var(--primary-color) !important;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.1) !important;
         }
         .btn-outline-warning:hover {
-            background-color: #F1F5F9 !important;
-            border-color: #334155 !important;
-            color: #0F172A !important;
-            box-shadow: 0 3px 8px rgba(71, 85, 105, 0.2) !important;
+            background: var(--primary-gradient) !important;
+            border-color: transparent !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3) !important;
         }
 
-        /* Danger Button: Solid Red */
+        /* Danger Button: Red Accent */
         .btn-danger {
-            background-color: #DC2626 !important;
-            border-color: #DC2626 !important;
+            background-color: var(--accent-color) !important;
             color: #FFFFFF !important;
-            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.28) !important;
+            box-shadow: 0 6px 16px -4px rgba(244, 63, 94, 0.4) !important;
         }
         .btn-danger:hover {
-            background-color: #B91C1C !important;
-            border-color: #B91C1C !important;
-            box-shadow: 0 4px 12px rgba(185, 28, 28, 0.35) !important;
+            background-color: #E11D48 !important;
+            box-shadow: 0 10px 20px -4px rgba(244, 63, 94, 0.5) !important;
         }
 
+        /* Light Button */
         .btn-outline-light {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+            background-color: #F1F5F9 !important;
+            border: 2px solid transparent !important;
+            color: var(--text-main) !important;
         }
         .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.2) !important;
-            border-color: #FFFFFF !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 3px 8px rgba(255, 255, 255, 0.2) !important;
-        }
-
-        .btn-dark {
-            background-color: #1E293B !important;
-            border-color: #1E293B !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 2px 6px rgba(30, 41, 59, 0.25) !important;
-        }
-        .btn-dark:hover {
-            background-color: #0F172A !important;
-            border-color: #0F172A !important;
-            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3) !important;
+            background-color: #E2E8F0 !important;
+            color: var(--text-main) !important;
         }
 
         /* Modern Card Styling */
         .card {
-            border-radius: 12px;
-            border: 1px solid #E2E8F0 !important;
-            background-color: #FFFFFF;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            background-color: var(--surface-color);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07) !important;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.12) !important;
         }
 
         .site-footer {
-            background-color: #0F172A !important;
-            border-top: 1px solid #1E293B;
-            font-size: 0.9rem;
+            background-color: var(--surface-color) !important;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         /* Responsive Mobile Hamburger Menu Toggler */
         .navbar-toggler {
-            border: 1.5px solid #64748B !important;
-            background-color: rgba(100, 116, 139, 0.2) !important;
-            padding: 0.4rem 0.65rem !important;
-            border-radius: 8px !important;
+            border: none !important;
+            background-color: #F1F5F9 !important;
+            padding: 0.5rem !important;
+            border-radius: 12px !important;
             transition: all 0.2s ease;
-            outline: none !important;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-            min-width: 44px;
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .navbar-toggler:hover, .navbar-toggler:focus {
-            background-color: rgba(100, 116, 139, 0.35) !important;
-            border-color: #CBD5E1 !important;
-            box-shadow: 0 0 10px rgba(148, 163, 184, 0.4) !important;
-        }
-        .navbar-toggler-icon {
-            background-image: none !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: auto;
-            height: auto;
         }
         .navbar-toggler-icon::before {
             content: "\F479"; /* bi-list icon */
             font-family: "bootstrap-icons";
-            font-size: 1.65rem;
-            color: #CBD5E1;
+            font-size: 1.8rem;
+            color: var(--text-main);
         }
 
         /* Mobile Right Offcanvas Navigation Drawer (< 992px) */
@@ -197,21 +182,19 @@
                 right: 0 !important;
                 left: auto !important;
                 bottom: 0 !important;
-                width: 290px !important;
+                width: 320px !important;
                 max-width: 85vw !important;
                 height: 100vh !important;
                 z-index: 1060 !important;
-                background: #0F172A !important;
-                border-left: 2px solid #64748B !important;
-                border-radius: 16px 0 0 16px !important;
-                padding: 1.5rem 1.25rem !important;
-                margin-top: 0 !important;
-                box-shadow: -8px 0 25px rgba(0, 0, 0, 0.5) !important;
+                background: var(--surface-color) !important;
+                border-left: 1px solid var(--border-color) !important;
+                border-radius: 24px 0 0 24px !important;
+                padding: 2rem 1.5rem !important;
+                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1) !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-between !important;
                 transform: translateX(100%) !important;
-                transition: transform 0.25s ease-in-out, visibility 0.25s !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s !important;
                 visibility: hidden !important;
                 overflow-y: auto !important;
             }
@@ -220,110 +203,55 @@
                 visibility: visible !important;
             }
             
-            /* Clean Backdrop Overlay (Performance Optimized) */
             .offcanvas-backdrop-custom {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(15, 23, 42, 0.6);
-                z-index: 1050;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.25s ease, visibility 0.25s ease;
-            }
-            .offcanvas-backdrop-custom.show {
-                opacity: 1;
-                visibility: visible;
+                background: rgba(15, 23, 42, 0.4);
+                backdrop-filter: blur(4px);
             }
 
             .mobile-offcanvas-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding-bottom: 1.25rem;
-                margin-bottom: 1.25rem;
-                border-bottom: 1px solid #1E293B;
+                padding-bottom: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--border-color);
             }
             
             .mobile-offcanvas-close {
-                background: #1E293B;
-                border: 1px solid #334155;
-                color: #FFFFFF;
-                width: 38px;
-                height: 38px;
+                background: #F1F5F9;
+                border: none;
+                color: var(--text-main);
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                font-size: 1.1rem;
-            }
-            .mobile-offcanvas-close:hover {
-                background: #DC2626;
-                color: #FFFFFF;
-                border-color: #DC2626;
+                font-size: 1.2rem;
             }
 
-            .navbar-nav {
-                margin-bottom: auto !important;
-                width: 100%;
-            }
             .nav-link {
-                padding: 0.85rem 1rem !important;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                margin-bottom: 0.5rem;
-                font-size: 1.05rem;
-                font-weight: 600;
-                background-color: #1E293B;
-                border: 1px solid #334155;
-                color: #FFFFFF !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            }
-            .nav-link:hover {
-                background-color: rgba(100, 116, 139, 0.3) !important;
-                border-color: #64748B !important;
-                color: #CBD5E1 !important;
-            }
-            .nav-link.active {
-                background-color: #475569 !important;
-                border-color: #475569 !important;
-                color: #FFFFFF !important;
-                font-weight: 700;
-                box-shadow: 0 2px 8px rgba(71, 85, 105, 0.4);
+                padding: 1rem 1.25rem !important;
+                border-radius: 12px;
+                background-color: #F8FAFC;
+                color: var(--text-main) !important;
+                box-shadow: none;
+                border: 1px solid var(--border-color);
             }
             .user-mobile-actions {
-                border-top: 1px solid #1E293B;
-                padding-top: 1.25rem;
-                margin-top: 1.5rem;
-                flex-direction: column;
-                align-items: stretch !important;
-                width: 100%;
-                gap: 0.75rem !important;
-            }
-            .user-mobile-actions .btn {
-                width: 100%;
-                padding: 0.7rem 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1rem;
-                font-weight: 600;
-                border-radius: 8px;
+                border-top: 1px solid var(--border-color);
             }
             .user-greeting {
-                background-color: #1E293B;
-                border: 1px solid #334155;
-                padding: 0.75rem 1rem;
-                border-radius: 8px;
-                border-left: 4px solid #64748B;
-                text-align: center;
-                width: 100%;
+                background-color: #F8FAFC;
+                border: 1px solid var(--border-color);
+                border-left: 4px solid var(--primary-color);
+                color: var(--text-main) !important;
+            }
+            .user-greeting strong {
+                color: var(--primary-color) !important;
+            }
+            .user-greeting .text-white-50 {
+                color: var(--text-muted) !important;
             }
         }
     </style>
@@ -332,11 +260,11 @@
     <!-- Mobile Offcanvas Backdrop Overlay -->
     <div id="clientNavbarBackdrop" class="offcanvas-backdrop-custom"></div>
 
-    <header class="site-header navbar navbar-expand-lg navbar-dark sticky-top py-3 shadow-sm">
+    <header class="site-header navbar navbar-expand-lg navbar-light sticky-top py-3 shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
             <!-- Left Side: Brand Logo -->
-            <a class="navbar-brand text-warning fw-bold fs-3 d-flex align-items-center" href="<c:url value='/home' />">
-                <i class="bi bi-shop me-2"></i>ÁO VỚ VẦN
+            <a class="navbar-brand logo-text d-flex align-items-center" href="<c:url value='/home' />">
+                ÁO VỚ VẦN
             </a>
 
             <!-- Right Side on Mobile: Hamburger Button -->
@@ -347,43 +275,44 @@
             <!-- Right Offcanvas Navigation Drawer -->
             <div class="collapse navbar-collapse" id="clientNavbar">
                 <div class="mobile-offcanvas-header d-lg-none">
-                    <a class="navbar-brand text-warning fw-bold fs-4 d-flex align-items-center mb-0" href="<c:url value='/home' />">
-                        <i class="bi bi-shop me-2"></i>ÁO VỚ VẦN
+                    <a class="navbar-brand logo-text d-flex align-items-center mb-0" href="<c:url value='/home' />">
+                        ÁO VỚ VẦN
                     </a>
                     <button type="button" class="mobile-offcanvas-close" id="btnCloseClientNav" aria-label="Close">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
                 <nav class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
-                    <a class="nav-link text-white px-3 ${activePage eq 'home' ? 'active' : ''}" href="<c:url value='/home' />">
-                        <i class="bi bi-house-door me-1 text-warning"></i> Trang chủ
+                    <a class="nav-link px-3 ${activePage eq 'home' ? 'active' : ''}" href="<c:url value='/home' />">
+                        Trang chủ
                     </a>
-                    <a class="nav-link text-white px-3 ${activePage eq 'products' ? 'active' : ''}" href="<c:url value='/products' />">
-                        <i class="bi bi-bag me-1 text-warning"></i> Sản phẩm
+                    <a class="nav-link px-3 ${activePage eq 'products' ? 'active' : ''}" href="<c:url value='/products' />">
+                        Sản phẩm
                     </a>
                     <c:if test="${not empty sessionScope.user}">
-                        <a class="nav-link text-white px-3 ${activePage eq 'cart' ? 'active' : ''}" href="<c:url value='/cart' />">
-                            <i class="bi bi-cart4 me-1 text-warning"></i> Giỏ hàng
+                        <a class="nav-link px-3 ${activePage eq 'cart' ? 'active' : ''}" href="<c:url value='/cart' />">
+                            Giỏ hàng
                         </a>
-                        <a class="nav-link text-white px-3 ${activePage eq 'orders' ? 'active' : ''}" href="<c:url value='/orders' />">
-                            <i class="bi bi-receipt me-1 text-warning"></i> Đơn hàng
+                        <a class="nav-link px-3 ${activePage eq 'orders' ? 'active' : ''}" href="<c:url value='/orders' />">
+                            Đơn hàng
                         </a>
                     </c:if>
                 </nav>
                 <div class="d-flex align-items-center gap-3 user-mobile-actions">
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
-                            <div class="user-greeting">
-                                <span class="text-white-50 small"><i class="bi bi-person-circle me-1 text-warning"></i> Xin chào, <strong class="text-white"><c:out value="${sessionScope.user.name}"/></strong></span>
+                            <div class="user-greeting px-3 py-2 rounded-3">
+                                <span class="text-muted small"><i class="bi bi-person-circle me-1" style="color: var(--primary-color);"></i> Xin chào, <strong class="text-dark"><c:out value="${sessionScope.user.name}"/></strong></span>
                             </div>
+                            <a class="btn btn-outline-light btn-sm font-semibold px-3" href="<c:url value='/profile' />">Hồ sơ</a>
                             <c:if test="${sessionScope.isAdmin eq true}">
                                 <a class="btn btn-outline-light btn-sm font-semibold" href="<c:url value='/admin/products' />"><i class="bi bi-speedometer2 me-1"></i> Quản trị</a>
                             </c:if>
-                            <a class="btn btn-danger btn-sm font-semibold" href="<c:url value='/logout' />"><i class="bi bi-box-arrow-right me-1"></i> Thoát</a>
+                            <a class="btn btn-danger btn-sm font-semibold px-3" href="<c:url value='/logout' />">Thoát</a>
                         </c:when>
                         <c:otherwise>
-                            <a class="btn btn-outline-warning btn-sm font-semibold px-3" href="<c:url value='/login' />"><i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập</a>
-                            <a class="btn btn-warning btn-sm font-semibold px-3" href="<c:url value='/register' />"><i class="bi bi-person-plus me-1"></i> Đăng ký</a>
+                            <a class="btn btn-outline-warning btn-sm font-semibold px-3" href="<c:url value='/login' />">Đăng nhập</a>
+                            <a class="btn btn-warning btn-sm font-semibold px-3" href="<c:url value='/register' />">Đăng ký</a>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -395,9 +324,9 @@
         <jsp:include page="${contentPage}" />
     </main>
 
-    <footer class="site-footer text-white-50 py-4 mt-auto">
+    <footer class="site-footer py-4 mt-auto">
         <div class="container text-center">
-            <p class="mb-0">© 2026 <strong class="text-white">Áo Vớ Vẩn</strong> - Thương Hiệu Thời Trang Độc Lạ. All rights reserved.</p>
+            <p class="mb-0">© 2026 <strong style="color: var(--text-main);">Áo Vớ Vẩn</strong> - Thương Hiệu Thời Trang Độc Lạ. All rights reserved.</p>
         </div>
     </footer>
 

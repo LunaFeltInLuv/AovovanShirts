@@ -5,131 +5,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký tài khoản - Áo Vớ Vẩn</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>Đăng ký - Áo Vớ Vẩn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/assets/css/bootstrap.css' />">
-    <link rel="stylesheet" href="<c:url value='/assets/vendors/bootstrap-icons/bootstrap-icons.css' />">
-    <link rel="stylesheet" href="<c:url value='/assets/css/app.css' />">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F43F5E 0%, #8B5CF6 100%);
+            --primary-color: #8B5CF6;
+            --surface-color: #FFFFFF;
+            --bg-color: #F8FAFC;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+        }
+        
         html, body {
             height: 100%;
             margin: 0;
-            background-color: #FAFAF9;
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
         }
+        
         #auth {
             height: 100%;
             overflow-x: hidden;
         }
+
+        .auth-logo a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.75rem;
+            letter-spacing: -0.05em;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
         #auth-left {
-            padding: 3rem 3rem;
+            padding: 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
         }
-        .auth-logo {
-            margin-bottom: 2rem;
-        }
+
         .auth-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1C1917;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
             margin-bottom: 0.5rem;
+            color: var(--text-main);
         }
+
         .auth-subtitle {
-            color: #7c8db5;
-            font-size: 1rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
         }
+
+        /* Modern Input Styling */
+        .form-control-modern {
+            padding: 0.85rem 1.25rem;
+            font-size: 1rem;
+            background-color: #F1F5F9;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .form-control-modern::placeholder {
+            color: #94A3B8;
+            font-weight: 400;
+        }
+
+        .form-control-modern:focus {
+            background-color: var(--surface-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+            outline: none;
+        }
+
+        /* Modern Gradient Button */
+        .btn-modern {
+            background: var(--primary-gradient);
+            color: white !important;
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 20px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px -5px rgba(244, 63, 94, 0.4);
+        }
+
+        .btn-modern:active {
+            transform: translateY(0);
+        }
+
+        /* Right Side Image */
         #auth-right {
             height: 100vh;
-            background: linear-gradient(135deg, rgba(28,25,23,0.9) 0%, rgba(161,98,7,0.7) 100%), 
-                        url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1200') no-repeat center center;
-            background-size: cover;
+            background: url('https://images.unsplash.com/photo-1550614000-4b95d466f2bd?q=80&w=1400&auto=format&fit=crop') center center / cover no-repeat;
+            position: relative;
         }
-        .form-control-xl {
-            padding: 0.75rem 1rem 0.75rem 2.5rem !important;
-            font-size: 1rem;
-            border-radius: 8px;
+
+        #auth-right::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(139, 92, 246, 0.4) 100%);
+            mix-blend-mode: overlay;
         }
-        .form-group[class*=has-icon-].has-icon-left .form-control-icon {
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+        
+        .auth-link {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
-        .btn-warning {
-            background-color: #A16207 !important;
-            border-color: #A16207 !important;
-            color: #FFFFFF !important;
-            font-weight: 600;
-        }
-        .btn-warning:hover {
-            background-color: #854d0e !important;
-            border-color: #854d0e !important;
-            box-shadow: 0 4px 10px rgba(161, 98, 7, 0.3);
-        }
-        .text-warning {
-            color: #A16207 !important;
+        
+        .auth-link:hover {
+            color: #F43F5E;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div id="auth">
         <div class="row h-100 g-0">
-            <div class="col-lg-5 col-12">
+            <div class="col-lg-5 col-12 d-flex flex-column" style="overflow-y: auto;">
                 <div id="auth-left">
-                    <div class="auth-logo">
-                        <a href="<c:url value='/home' />" class="text-warning font-bold fs-3 text-decoration-none">
-                            <i class="bi bi-shop me-2"></i>ÁO VỚ VẦN
-                        </a>
+                    <div class="auth-logo mb-4">
+                        <a href="<c:url value='/home' />">ÁO VỚ VẦN</a>
                     </div>
-                    <h1 class="auth-title">Đăng Ký.</h1>
-                    <p class="auth-subtitle mb-3">Tạo tài khoản của bạn để gia nhập gia đình Áo Vớ Vẩn.</p>
+                    
+                    <h1 class="auth-title">Đăng Ký</h1>
+                    <p class="auth-subtitle">Tạo tài khoản và trải nghiệm mua sắm ngay.</p>
 
                     <c:if test="${not empty error}">
-                        <div class="alert bg-light-danger text-danger rounded-3 mb-3 p-3" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div class="alert alert-danger" style="border-radius: 12px; font-weight: 500; padding: 0.8rem 1rem; margin-bottom: 1.5rem;">
                             <c:out value="${error}" />
                         </div>
                     </c:if>
 
                     <form action="<c:url value='/register' />" method="post">
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="text" name="username" class="form-control form-control-xl" placeholder="Tên đăng nhập (username)" required autofocus>
-                            <div class="form-control-icon">
-                                <i class="bi bi-person"></i>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <input type="text" name="username" class="form-control form-control-modern" placeholder="Tên đăng nhập" required autofocus>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="password" name="password" class="form-control form-control-modern" placeholder="Mật khẩu" required>
                             </div>
                         </div>
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="password" name="password" class="form-control form-control-xl" placeholder="Mật khẩu" required>
-                            <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
+                        
+                        <div class="form-group mb-3">
+                            <input type="text" name="name" class="form-control form-control-modern" placeholder="Họ và tên" required>
+                        </div>
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <input type="text" name="phone" class="form-control form-control-modern" placeholder="Số điện thoại" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" name="email" class="form-control form-control-modern" placeholder="Email" required>
                             </div>
                         </div>
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="text" name="name" class="form-control form-control-xl" placeholder="Họ và tên" required>
-                            <div class="form-control-icon">
-                                <i class="bi bi-card-text"></i>
-                            </div>
+                        
+                        <div class="form-group mb-4">
+                            <input type="text" name="address" class="form-control form-control-modern" placeholder="Địa chỉ giao hàng (Tùy chọn)">
                         </div>
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="text" name="phone" class="form-control form-control-xl" placeholder="Số điện thoại" required>
-                            <div class="form-control-icon">
-                                <i class="bi bi-phone"></i>
-                            </div>
-                        </div>
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="email" name="email" class="form-control form-control-xl" placeholder="Địa chỉ email" required>
-                            <div class="form-control-icon">
-                                <i class="bi bi-envelope"></i>
-                            </div>
-                        </div>
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="text" name="address" class="form-control form-control-xl" placeholder="Địa chỉ nhận hàng (không bắt buộc)">
-                            <div class="form-control-icon">
-                                <i class="bi bi-geo-alt"></i>
-                            </div>
-                        </div>
-                        <button class="btn btn-warning btn-block btn-lg shadow-lg mt-2 py-2">ĐĂNG KÝ NGAY</button>
+
+                        <button type="submit" class="btn btn-modern w-100 mb-4">TẠO TÀI KHOẢN</button>
+
                     </form>
-                    <div class="text-center mt-4 fs-5">
-                        <p class="text-gray-600">Đã có tài khoản? <a href="<c:url value='/login' />" class="font-bold text-warning text-decoration-none">Đăng nhập ngay</a>.</p>
-                        <p class="mt-2"><a href="<c:url value='/home' />" class="text-secondary text-decoration-none"><i class="bi bi-arrow-left"></i> Quay lại trang chủ</a></p>
+                    
+                    <div class="text-center mt-auto pb-4">
+                        <p class="text-muted">Đã có tài khoản? <a href="<c:url value='/login' />" class="auth-link">Đăng nhập</a>.</p>
+                        <p class="mt-2"><a href="<c:url value='/home' />" class="text-muted text-decoration-none hover-underline">Quay lại trang chủ</a></p>
                     </div>
                 </div>
             </div>

@@ -3,11 +3,11 @@
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <fmt:setLocale value="vi_VN"/>
 
-        <div class="container bg-white p-5 rounded-4 shadow-sm">
-            <h2 class="font-bold mb-4 text-dark"><i class="bi bi-cart4 text-warning me-2"></i>Giỏ Hàng Của Bạn</h2>
+        <div class="container bg-white p-5 shadow-sm" style="border-radius: 20px; border: 1px solid var(--border-color);">
+            <h2 class="font-bold mb-4 text-dark"><i class="bi bi-cart4 me-2" style="color: var(--primary-color);"></i>Giỏ Hàng Của Bạn</h2>
 
             <c:if test="${not empty sessionScope.cartError}">
-                <div class="alert bg-light-danger text-danger rounded-3 p-3 mb-4" role="alert">
+                <div class="alert text-danger rounded-3 p-3 mb-4 font-semibold" style="background-color: #FEE2E2; border: 1px solid #FECACA;" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <c:out value="${sessionScope.cartError}" />
                 </div>
@@ -16,33 +16,33 @@
 
             <c:choose>
                 <c:when test="${empty cartItems}">
-                    <div class="alert bg-light-info text-info rounded-3 p-4" role="alert">
-                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                    <div class="alert rounded-3 p-4 font-semibold" style="background-color: var(--bg-color); color: var(--text-muted); border: 1px solid var(--border-color);" role="alert">
+                        <i class="bi bi-info-circle-fill me-2 fs-5" style="color: var(--primary-color);"></i>
                         Giỏ hàng của bạn đang trống! <a href="<c:url value='/products' />"
-                            class="alert-link font-bold text-decoration-none">Vào cửa hàng mua áo ngay.</a>
+                            class="alert-link font-bold text-decoration-none" style="color: var(--primary-color);">Vào cửa hàng mua áo ngay.</a>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div class="table-responsive">
                         <table class="table align-middle">
-                            <thead class="table-light text-secondary">
+                            <thead style="background-color: var(--bg-color); border-bottom: 2px solid var(--border-color); color: var(--text-muted);">
                                 <tr>
-                                    <th class="ps-3">Sản phẩm</th>
-                                    <th>Đơn giá</th>
-                                    <th style="width: 160px;">Số lượng</th>
-                                    <th>Thành tiền</th>
-                                    <th class="text-end pe-3">Hành động</th>
+                                    <th class="ps-3 border-0">Sản phẩm</th>
+                                    <th class="border-0">Đơn giá</th>
+                                    <th style="width: 160px;" class="border-0">Số lượng</th>
+                                    <th class="border-0">Thành tiền</th>
+                                    <th class="text-end pe-3 border-0">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <c:forEach var="item" items="${cartItems}">
-                                    <tr>
-                                        <td class="ps-3">
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
+                                        <td class="ps-3 py-3 border-0">
                                             <div class="d-flex align-items-center">
                                                 <img src="${empty item.product.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : item.product.imageUrl}"
                                                     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';"
-                                                    class="rounded-3 me-3 border"
-                                                    style="width: 64px; height: 64px; object-fit: cover;">
+                                                    class="rounded-3 me-3"
+                                                    style="width: 64px; height: 64px; object-fit: cover; border: 1px solid var(--border-color);">
                                                 <div>
                                                     <h6 class="mb-0 font-bold text-dark">
                                                         <c:out value="${item.product.name}" />
@@ -50,31 +50,31 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span class="font-semibold text-secondary"><fmt:formatNumber value="${item.product.price}" pattern="#,##0"/> VNĐ</span>
+                                        <td class="border-0"><span class="font-semibold" style="color: var(--text-muted);"><fmt:formatNumber value="${item.product.price}" pattern="#,##0"/> VNĐ</span>
                                         </td>
-                                        <td>
+                                        <td class="border-0">
                                             <form action="<c:url value='/cart/update' />" method="post" class="d-flex align-items-center cart-update-form" onsubmit="return false;">
                                                 <input type="hidden" name="productId" value="${item.productId}">
-                                                <div class="input-group input-group-sm flex-nowrap" style="width: 115px;">
-                                                    <button type="button" class="btn btn-outline-dark font-bold px-2" onclick="changeQty(this, -1)" style="width: 34px;">-</button>
+                                                <div class="input-group flex-nowrap" style="width: 115px;">
+                                                    <button type="button" class="btn font-bold px-2" onclick="changeQty(this, -1)" style="width: 34px; background-color: var(--bg-color); border: 1px solid var(--border-color);">-</button>
                                                     <input type="number" name="quantity"
-                                                        class="form-control text-center font-bold px-1 cart-qty-input border-dark"
+                                                        class="form-control text-center font-bold px-1 cart-qty-input"
                                                         value="${item.quantity}" min="1" max="${item.product.stockQuantity}"
                                                         data-product-id="${item.productId}"
                                                         data-price="${item.product.price}"
-                                                        style="-moz-appearance: textfield; border-left: 0; border-right: 0;">
-                                                    <button type="button" class="btn btn-outline-dark font-bold px-2" onclick="changeQty(this, 1)" style="width: 34px;">+</button>
+                                                        style="-moz-appearance: textfield; border-left: 0; border-right: 0; background-color: transparent; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+                                                    <button type="button" class="btn font-bold px-2" onclick="changeQty(this, 1)" style="width: 34px; background-color: var(--bg-color); border: 1px solid var(--border-color);">+</button>
                                                 </div>
                                             </form>
                                         </td>
-                                        <td><span class="text-danger font-semibold"
+                                        <td class="border-0"><span class="font-bold" style="color: var(--primary-color);"
                                                 id="line-total-${item.productId}"><fmt:formatNumber value="${item.lineTotal}" pattern="#,##0"/> VNĐ</span></td>
-                                        <td class="text-end pe-3">
+                                        <td class="text-end pe-3 border-0">
                                             <form action="<c:url value='/cart/remove' />" method="post"
                                                 class="d-inline">
                                                 <input type="hidden" name="productId" value="${item.productId}">
                                                 <button type="submit"
-                                                    class="btn btn-light-danger btn-sm font-semibold px-3">
+                                                    class="btn btn-sm font-semibold px-3" style="background-color: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; border-radius: 8px;">
                                                     <i class="bi bi-trash-fill me-1"></i> Xóa
                                                 </button>
                                             </form>
@@ -86,14 +86,14 @@
                     </div>
 
                     <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mt-5 pt-4 border-top gap-3">
-                        <a href="<c:url value='/products' />" class="btn btn-outline-dark font-semibold"><i
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mt-5 pt-4 gap-3" style="border-top: 1px solid var(--border-color);">
+                        <a href="<c:url value='/products' />" class="btn font-semibold" style="background-color: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px;"><i
                                 class="bi bi-arrow-left me-1"></i> Tiếp tục mua hàng</a>
                         <div class="text-end">
-                            <h4 class="font-bold text-dark">Tổng tiền: <span class="text-danger"
+                            <h4 class="font-bold text-dark mb-3">Tổng tiền: <span class="font-bold" style="color: var(--primary-color);"
                                     id="grand-total-val"><fmt:formatNumber value="${totalSum}" pattern="#,##0"/> VNĐ</span></h4>
                             <a href="<c:url value='/checkout' />" id="checkout-btn"
-                                class="btn btn-warning btn-lg font-bold text-white mt-2 px-4 py-2 text-uppercase">
+                                class="btn btn-warning btn-lg font-bold text-white px-4 py-3 text-uppercase" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);">
                                 TIẾN HÀNH THANH TOÁN <i class="bi bi-credit-card-2-back ms-2"></i>
                             </a>
                         </div>
