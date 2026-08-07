@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 
 <div class="container bg-white p-5 rounded-4 shadow-sm">
     <h2 class="font-bold mb-4 text-dark"><i class="bi bi-credit-card text-warning me-2"></i>Thanh Toán Đơn Hàng</h2>
@@ -50,15 +52,15 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
                                 <div style="max-width: 70%;">
                                     <h6 class="my-0 font-bold text-dark text-truncate"><c:out value="${item.product.name}"/></h6>
-                                    <small class="text-secondary">SL: ${item.quantity} x ${item.product.price} VNĐ</small>
+                                    <small class="text-secondary">SL: ${item.quantity} x <fmt:formatNumber value="${item.product.price}" pattern="#,##0"/> VNĐ</small>
                                 </div>
-                                <span class="text-danger font-semibold">${item.product.price * item.quantity} VNĐ</span>
+                                <span class="text-danger font-semibold"><fmt:formatNumber value="${item.product.price * item.quantity}" pattern="#,##0"/> VNĐ</span>
                             </li>
                         </c:forEach>
                     </ul>
                     <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
                         <span class="fs-5 font-bold text-dark">Tổng thanh toán:</span>
-                        <span class="fs-4 text-danger font-bold">${totalAmount} VNĐ</span>
+                        <span class="fs-4 text-danger font-bold"><fmt:formatNumber value="${totalAmount}" pattern="#,##0"/> VNĐ</span>
                     </div>
                     <button type="submit" class="btn btn-warning btn-lg font-bold text-white w-100 mt-4 py-2 text-uppercase">XÁC NHẬN ĐẶT HÀNG</button>
                 </div>

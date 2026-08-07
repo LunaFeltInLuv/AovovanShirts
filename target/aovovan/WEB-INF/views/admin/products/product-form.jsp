@@ -13,7 +13,7 @@
             </a>
         </div>
         <div class="card-body py-4">
-            <form action="<c:url value='${empty product ? "/admin/products/add" : "/admin/products/update"}' />" method="post">
+            <form action="<c:url value='${empty product ? "/admin/products/add" : "/admin/products/update"}' />" method="post" enctype="multipart/form-data">
                 <c:if test="${not empty product}">
                     <input type="hidden" name="id" value="${product.id}">
                 </c:if>
@@ -43,9 +43,46 @@
                     <input type="text" name="category" class="form-control" value="<c:out value='${product.category}'/>" placeholder="Ví dụ: Áo thun, Áo sơ mi...">
                 </div>
 
-                <div class="form-group mb-3">
-                    <label class="form-label font-semibold text-secondary">Đường dẫn hình ảnh (URL)</label>
-                    <input type="url" name="imageUrl" class="form-control" value="<c:out value='${product.imageUrl}'/>" placeholder="https://example.com/image.jpg">
+                <!-- Product Image Selection Card -->
+                <div class="card bg-light border mb-4">
+                    <div class="card-body p-3">
+                        <label class="form-label font-bold text-dark mb-2"><i class="bi bi-image me-1"></i>Hình ảnh sản phẩm</label>
+                        
+                        <!-- Toggle Options -->
+                        <div class="btn-group w-100 mb-3" role="group">
+                            <input type="radio" class="btn-check" name="imageOption" id="optionUrl" value="url" checked onclick="toggleImageOption('url')">
+                            <label class="btn btn-outline-primary font-semibold py-2" for="optionUrl">
+                                <i class="bi bi-link-45deg me-1"></i> 1. Dán URL ảnh
+                            </label>
+
+                            <input type="radio" class="btn-check" name="imageOption" id="optionFile" value="file" onclick="toggleImageOption('file')">
+                            <label class="btn btn-outline-primary font-semibold py-2" for="optionFile">
+                                <i class="bi bi-upload me-1"></i> 2. Upload tệp từ máy
+                            </label>
+                        </div>
+
+                        <!-- Option 1: URL Input -->
+                        <div id="imageOptionUrlGroup" class="form-group mb-3">
+                            <input type="url" id="imageUrlInput" name="imageUrl" class="form-control" 
+                                   value="<c:out value='${product.imageUrl}'/>" 
+                                   placeholder="Dán đường dẫn ảnh trực tuyến (https://example.com/image.jpg)..."
+                                   oninput="previewImageUrl(this.value)">
+                            <small class="text-muted">Nhập liên kết đường dẫn hình ảnh trực tuyến.</small>
+                        </div>
+
+                        <!-- Option 2: File Upload Input -->
+                        <div id="imageOptionFileGroup" class="form-group mb-3 d-none">
+                            <input type="file" id="imageFileInput" name="imageFile" class="form-control" accept="image/*" onchange="previewImageFile(this)">
+                            <small class="text-muted">Tệp ảnh sẽ tự động được tải lên và lưu vào thư mục <code>assets/images/products</code> trên server.</small>
+                        </div>
+
+                        <!-- Live Preview -->
+                        <div class="mt-3 text-center border-top pt-3">
+                            <label class="form-label d-block text-muted small font-semibold mb-2">Xem trước hình ảnh:</label>
+                            <img id="imgPreview" src="${empty product.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : product.imageUrl}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';" 
+                                 alt="Preview" class="img-thumbnail rounded-3 shadow-sm" style="max-height: 180px; object-fit: cover;">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group mb-3">
@@ -66,3 +103,37 @@
         </div>
     </div>
 </section>
+
+<script>
+    function toggleImageOption(type) {
+        const urlGroup = document.getElementById('imageOptionUrlGroup');
+        const fileGroup = document.getElementById('imageOptionFileGroup');
+        if (type === 'file') {
+            urlGroup.classList.add('d-none');
+            fileGroup.classList.remove('d-none');
+        } else {
+            fileGroup.classList.add('d-none');
+            urlGroup.classList.remove('d-none');
+        }
+    }
+
+    function previewImageUrl(url) {
+        const preview = document.getElementById('imgPreview');
+        if (url && url.trim() !== '') {
+            preview.src = url;
+        } else {
+            preview.src = '${pageContext.request.contextPath}/assets/images/placeholder.svg';
+        }
+    }
+
+    function previewImageFile(input) {
+        const preview = document.getElementById('imgPreview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

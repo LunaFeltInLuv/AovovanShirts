@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 
 <section class="section">
     <div class="card shadow-sm border-0">
@@ -9,6 +11,17 @@
                 <i class="bi bi-plus-circle me-1"></i> Thêm Áo Mới
             </a>
         </div>
+        <c:if test="${not empty selectedCategory}">
+            <div class="alert alert-info d-flex align-items-center justify-content-between m-3 mb-0 rounded-3">
+                <div>
+                    <i class="bi bi-funnel-fill me-2"></i>
+                    Đang hiển thị các sản phẩm thuộc danh mục: <span class="badge bg-primary fs-6 ms-1"><c:out value="${selectedCategory}"/></span>
+                </div>
+                <a href="<c:url value='/admin/products' />" class="btn btn-outline-dark btn-sm font-semibold">
+                    <i class="bi bi-x-circle me-1"></i> Xem tất cả sản phẩm
+                </a>
+            </div>
+        </c:if>
         <div class="card-body py-3">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -29,11 +42,11 @@
                             <tr>
                                 <td class="ps-3 font-semibold">${p.id}</td>
                                 <td>
-                                    <img src="${empty p.imageUrl ? 'https://via.placeholder.com/50?text=Shirt' : p.imageUrl}" class="rounded" style="width: 48px; height: 48px; object-fit: cover; border: 1px solid #eee;">
+                                    <img src="${empty p.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : p.imageUrl}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';" class="rounded" style="width: 48px; height: 48px; object-fit: cover; border: 1px solid #eee;">
                                 </td>
                                 <td><span class="font-bold text-dark"><c:out value="${p.name}"/></span></td>
                                 <td><span class="badge bg-light-secondary text-secondary"><c:out value="${p.category}"/></span></td>
-                                <td><span class="text-danger font-semibold">${p.price} VNĐ</span></td>
+                                <td><span class="text-danger font-semibold"><fmt:formatNumber value="${p.price}" pattern="#,##0"/> VNĐ</span></td>
                                 <td>
                                     <span class="font-semibold ${p.stockQuantity <= 5 ? 'text-warning' : 'text-dark'}">${p.stockQuantity}</span>
                                 </td>

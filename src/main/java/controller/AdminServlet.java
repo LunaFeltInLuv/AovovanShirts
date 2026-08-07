@@ -17,7 +17,7 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute("pageTitle", "Trang quản trị");
         request.setAttribute("activePage", "dashboard");
-        request.setAttribute("contentPage", "/WEB-INF/views/admin/danhmuc/danhmuc.jsp");
+        request.setAttribute("contentPage", "/WEB-INF/views/admin/dashboard/dashboard.jsp");
         request.getRequestDispatcher("/WEB-INF/views/admin/layout/layout.jsp")
                 .forward(request, response);
     }

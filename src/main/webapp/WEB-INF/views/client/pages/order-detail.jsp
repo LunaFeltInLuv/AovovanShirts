@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 
 <div class="container bg-white p-5 rounded-4 shadow-sm">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
@@ -50,13 +52,13 @@
                     <tr>
                         <td class="ps-3">
                             <div class="d-flex align-items-center">
-                                <img src="${empty d.product.imageUrl ? 'https://via.placeholder.com/60?text=Shirt' : d.product.imageUrl}" class="rounded-3 me-3 border" style="width: 54px; height: 54px; object-fit: cover;">
+                                <img src="${empty d.product.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : d.product.imageUrl}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';" class="rounded-3 me-3 border" style="width: 54px; height: 54px; object-fit: cover;">
                                 <span class="font-bold text-dark"><c:out value="${d.product.name}"/></span>
                             </div>
                         </td>
-                        <td><span class="text-secondary">${d.price} VNĐ</span></td>
+                        <td><span class="text-secondary"><fmt:formatNumber value="${d.price}" pattern="#,##0"/> VNĐ</span></td>
                         <td><span class="badge bg-secondary font-semibold">${d.quantity}</span></td>
-                        <td class="text-end pe-3 text-danger font-semibold">${d.totalLine} VNĐ</td>
+                        <td class="text-end pe-3 text-danger font-semibold"><fmt:formatNumber value="${d.totalLine}" pattern="#,##0"/> VNĐ</td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -64,6 +66,6 @@
     </div>
 
     <div class="text-end border-top mt-4 pt-3">
-        <h4 class="font-bold mb-0">Tổng cộng: <span class="text-danger">${order.totalAmount} VNĐ</span></h4>
+        <h4 class="font-bold mb-0">Tổng cộng: <span class="text-danger"><fmt:formatNumber value="${order.totalAmount}" pattern="#,##0"/> VNĐ</span></h4>
     </div>
 </div>

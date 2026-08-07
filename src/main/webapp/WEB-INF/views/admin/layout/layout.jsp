@@ -13,16 +13,79 @@
     <link rel="stylesheet" href="<c:url value='/assets/vendors/perfect-scrollbar/perfect-scrollbar.css' />">
     <link rel="stylesheet" href="<c:url value='/assets/vendors/bootstrap-icons/bootstrap-icons.css' />">
     <link rel="stylesheet" href="<c:url value='/assets/css/app.css' />">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .burger-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            border: 1.5px solid #CBD5E1;
+            color: #1E293B;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            text-decoration: none !important;
+        }
+        .burger-btn:hover, .burger-btn:focus {
+            background-color: #F1F5F9;
+            color: #475569;
+            border-color: #475569;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(71, 85, 105, 0.2);
+        }
+        .burger-btn i {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        @media screen and (max-width: 1199px) {
+            #sidebar-backdrop {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(15, 23, 42, 0.55);
+                z-index: 998;
+                opacity: 0;
+                transition: opacity 0.25s ease;
+            }
+            #sidebar-backdrop.show {
+                display: block;
+                opacity: 1;
+            }
+            #sidebar {
+                z-index: 999 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
+        <div id="sidebar-backdrop"></div>
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo">
-                            <a href="<c:url value='/admin/products' />" class="text-warning font-weight-bold h4 text-decoration-none">
+                            <a href="<c:url value='/admin' />" class="text-warning font-weight-bold h4 text-decoration-none">
                                 <i class="bi bi-shield-lock me-1"></i>VỚ VẦN ADMIN
                             </a>
                         </div>
@@ -34,6 +97,13 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu Quản trị</li>
+
+                        <li class="sidebar-item ${activePage eq 'dashboard' ? 'active' : ''}">
+                            <a href="<c:url value='/admin' />" class='sidebar-link'>
+                                <i class="bi bi-speedometer2"></i>
+                                <span>Tổng quan</span>
+                            </a>
+                        </li>
 
                         <li class="sidebar-item ${activePage eq 'products' ? 'active' : ''}">
                             <a href="<c:url value='/admin/products' />" class='sidebar-link'>
@@ -156,5 +226,41 @@
     <script src="<c:url value='/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js' />"></script>
     <script src="<c:url value='/assets/js/bootstrap.bundle.min.js' />"></script>
     <script src="<c:url value='/assets/js/main.js' />"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const burgerBtn = document.querySelector('.burger-btn');
+            const sidebarHide = document.querySelector('.sidebar-hide');
+
+            function updateBackdropState() {
+                if (window.innerWidth < 1200 && sidebar && sidebar.classList.contains('active')) {
+                    backdrop.classList.add('show');
+                } else {
+                    backdrop.classList.remove('show');
+                }
+            }
+
+            if (burgerBtn) {
+                burgerBtn.addEventListener('click', function() {
+                    setTimeout(updateBackdropState, 50);
+                });
+            }
+            if (sidebarHide) {
+                sidebarHide.addEventListener('click', function() {
+                    setTimeout(updateBackdropState, 50);
+                });
+            }
+            if (backdrop) {
+                backdrop.addEventListener('click', function() {
+                    if (sidebar) sidebar.classList.remove('active');
+                    backdrop.classList.remove('show');
+                });
+            }
+            window.addEventListener('resize', function() {
+                updateBackdropState();
+            });
+        });
+    </script>
 </body>
 </html>

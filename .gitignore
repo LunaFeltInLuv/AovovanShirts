@@ -1,1 +1,4 @@
 *.sql
+.agents/
+.env
+.env.*

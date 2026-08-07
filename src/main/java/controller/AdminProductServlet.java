@@ -2,17 +2,29 @@ package controller;
 
 import dao.ProductDAO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.Product;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/admin/products", "/admin/products/add", "/admin/products/update", "/admin/products/delete", "/admin/products/restore"})
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10,      // 10MB
+    maxRequestSize = 1024 * 1024 * 50    // 50MB
+)
 public class AdminProductServlet extends HttpServlet {
     private ProductDAO productDAO = new ProductDAO();
 
@@ -20,7 +32,14 @@ public class AdminProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
         if ("/admin/products".equals(path)) {
-            List<Product> products = productDAO.getAllProductsAdmin();
+            String category = req.getParameter("category");
+            List<Product> products;
+            if (category != null && !category.trim().isEmpty()) {
+                products = productDAO.getProductsByCategoryAdmin(category.trim());
+                req.setAttribute("selectedCategory", category.trim());
+            } else {
+                products = productDAO.getAllProductsAdmin();
+            }
             req.setAttribute("products", products);
             req.setAttribute("pageTitle", "Quản lý sản phẩm");
             req.setAttribute("activePage", "products");
@@ -99,8 +118,69 @@ public class AdminProductServlet extends HttpServlet {
             p.setStockQuantity(0);
         }
         p.setCategory(req.getParameter("category"));
-        p.setImageUrl(req.getParameter("imageUrl"));
+        p.setImageUrl(handleImageSource(req));
         p.setIsActive("true".equalsIgnoreCase(req.getParameter("isActive")) || "1".equals(req.getParameter("isActive")));
         return p;
+    }
+
+    private String handleImageSource(HttpServletRequest req) {
+        try {
+            Part filePart = req.getPart("imageFile");
+            if (filePart != null && filePart.getSize() > 0) {
+                String submittedFileName = filePart.getSubmittedFileName();
+                if (submittedFileName != null && !submittedFileName.trim().isEmpty()) {
+                    String fileName = Paths.get(submittedFileName).getFileName().toString();
+                    String ext = "";
+                    int dotIdx = fileName.lastIndexOf('.');
+                    if (dotIdx >= 0) {
+                        ext = fileName.substring(dotIdx);
+                    }
+                    String savedFileName = "prod_" + System.currentTimeMillis() + ext;
+                    
+                    // Save to server deployed directory
+                    String uploadPath = req.getServletContext().getRealPath("/assets/images/products");
+                    File uploadDir = new File(uploadPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdirs();
+                    }
+                    File serverFile = new File(uploadDir, savedFileName);
+                    try (InputStream input = filePart.getInputStream()) {
+                        Files.copy(input, serverFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    }
+
+                    // Save to local workspace source folder if running in development
+                    try {
+                        File srcDir = new File(req.getServletContext().getRealPath("/").split("target")[0] + "src/main/webapp/assets/images/products");
+                        if (srcDir.exists() || srcDir.mkdirs()) {
+                            File srcFile = new File(srcDir, savedFileName);
+                            Files.copy(serverFile.toPath(), srcFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    } catch (Exception ignored) {}
+
+                    return req.getContextPath() + "/assets/images/products/" + savedFileName;
+                }
+            }
+        } catch (Exception e) {
+            // Not a multipart file upload or failed, fallback to url
+        }
+
+        // Fallback to text imageUrl input
+        String imageUrl = req.getParameter("imageUrl");
+        if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+            return imageUrl.trim();
+        }
+
+        // If updating an existing product and no new image was submitted, retain existing imageUrl
+        String idStr = req.getParameter("id");
+        if (idStr != null) {
+            try {
+                int id = Integer.parseInt(idStr);
+                Product existing = productDAO.getProductById(id);
+                if (existing != null && existing.getImageUrl() != null) {
+                    return existing.getImageUrl();
+                }
+            } catch (Exception ignored) {}
+        }
+        return "";
     }
 }

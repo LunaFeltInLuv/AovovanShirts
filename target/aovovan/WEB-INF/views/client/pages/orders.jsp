@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 
 <div class="container bg-white p-5 rounded-4 shadow-sm">
     <h2 class="font-bold mb-4 text-dark"><i class="bi bi-clock-history text-warning me-2"></i>Lịch Sử Đơn Hàng Của Bạn</h2>
@@ -37,7 +39,7 @@
                             <tr>
                                 <td class="ps-3 font-bold text-dark">#${o.id}</td>
                                 <td>${o.orderDate}</td>
-                                <td><span class="text-danger font-semibold">${o.totalAmount} VNĐ</span></td>
+                                <td><span class="text-danger font-semibold"><fmt:formatNumber value="${o.totalAmount}" pattern="#,##0"/> VNĐ</span></td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${o.status eq 'pending'}"><span class="badge bg-light-warning text-warning">Chờ xác nhận</span></c:when>

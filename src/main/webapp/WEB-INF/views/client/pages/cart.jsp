@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <fmt:setLocale value="vi_VN"/>
 
         <div class="container bg-white p-5 rounded-4 shadow-sm">
             <h2 class="font-bold mb-4 text-dark"><i class="bi bi-cart4 text-warning me-2"></i>Giỏ Hàng Của Bạn</h2>
@@ -37,7 +39,8 @@
                                     <tr>
                                         <td class="ps-3">
                                             <div class="d-flex align-items-center">
-                                                <img src="${empty item.product.imageUrl ? 'https://via.placeholder.com/80?text=Shirt' : item.product.imageUrl}"
+                                                <img src="${empty item.product.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : item.product.imageUrl}"
+                                                    onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';"
                                                     class="rounded-3 me-3 border"
                                                     style="width: 64px; height: 64px; object-fit: cover;">
                                                 <div>
@@ -47,7 +50,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span class="font-semibold text-secondary">${item.product.price} VNĐ</span>
+                                        <td><span class="font-semibold text-secondary"><fmt:formatNumber value="${item.product.price}" pattern="#,##0"/> VNĐ</span>
                                         </td>
                                         <td>
                                             <form action="<c:url value='/cart/update' />" method="post" class="d-flex align-items-center cart-update-form" onsubmit="return false;">
@@ -65,7 +68,7 @@
                                             </form>
                                         </td>
                                         <td><span class="text-danger font-semibold"
-                                                id="line-total-${item.productId}">${item.lineTotal} VNĐ</span></td>
+                                                id="line-total-${item.productId}"><fmt:formatNumber value="${item.lineTotal}" pattern="#,##0"/> VNĐ</span></td>
                                         <td class="text-end pe-3">
                                             <form action="<c:url value='/cart/remove' />" method="post"
                                                 class="d-inline">
@@ -88,7 +91,7 @@
                                 class="bi bi-arrow-left me-1"></i> Tiếp tục mua hàng</a>
                         <div class="text-end">
                             <h4 class="font-bold text-dark">Tổng tiền: <span class="text-danger"
-                                    id="grand-total-val">${totalSum} VNĐ</span></h4>
+                                    id="grand-total-val"><fmt:formatNumber value="${totalSum}" pattern="#,##0"/> VNĐ</span></h4>
                             <a href="<c:url value='/checkout' />" id="checkout-btn"
                                 class="btn btn-warning btn-lg font-bold text-white mt-2 px-4 py-2 text-uppercase">
                                 TIẾN HÀNH THANH TOÁN <i class="bi bi-credit-card-2-back ms-2"></i>
@@ -137,7 +140,7 @@
                 const debounceTimers = {};
 
                 function formatCurrency(amount) {
-                    return amount.toFixed(2) + ' VNĐ';
+                    return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' VNĐ';
                 }
 
                 function calculateTotals() {
