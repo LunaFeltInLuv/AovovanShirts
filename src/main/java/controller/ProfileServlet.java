@@ -45,6 +45,7 @@ public class ProfileServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String email = req.getParameter("email");
         String address = req.getParameter("address");
+        String profilePictureURL = req.getParameter("profilePictureURL");
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
         String confirmPassword = req.getParameter("confirmPassword");
@@ -55,6 +56,11 @@ public class ProfileServlet extends HttpServlet {
             userToUpdate.setPhone(phone);
             userToUpdate.setEmail(email);
             userToUpdate.setAddress(address);
+            if (profilePictureURL != null && !profilePictureURL.trim().isEmpty()) {
+                userToUpdate.setProfilePictureURL(profilePictureURL);
+            } else {
+                userToUpdate.setProfilePictureURL(null);
+            }
             
             boolean passwordChanged = false;
             if ((oldPassword != null && !oldPassword.trim().isEmpty()) || 

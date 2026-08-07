@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <style>
     :root {
@@ -141,8 +141,15 @@
 
     <div class="profile-card">
         
-        <div class="avatar-wrapper">
-            ${not empty sessionScope.user.name ? sessionScope.user.name.substring(0, 1).toUpperCase() : 'U'}
+        <div class="avatar-wrapper" style="overflow: hidden; position: relative;">
+            <c:choose>
+                <c:when test="${not empty sessionScope.user.profilePictureURL}">
+                    <img src="${sessionScope.user.profilePictureURL}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                </c:when>
+                <c:otherwise>
+                    ${not empty sessionScope.user.name ? sessionScope.user.name.substring(0, 1).toUpperCase() : 'U'}
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <c:if test="${not empty successMessage}">
@@ -180,6 +187,11 @@
                     <label class="form-label-modern">Email</label>
                     <input type="email" name="email" class="form-control form-control-modern" value="${sessionScope.user.email}" required>
                 </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label-modern">Ảnh đại diện (URL)</label>
+                <input type="url" name="profilePictureURL" class="form-control form-control-modern" value="${sessionScope.user.profilePictureURL}" placeholder="Nhập đường link ảnh đại diện (ví dụ: https://...)">
             </div>
 
             <div class="mb-4">

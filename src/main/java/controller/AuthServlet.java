@@ -27,6 +27,12 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
+
         if ("/login".equals(path)) {
             req.setAttribute("pageTitle", "Đăng nhập - Áo Vớ Vẩn");
             req.getRequestDispatcher("/WEB-INF/views/client/pages/login.jsp").forward(req, resp);
@@ -40,6 +46,12 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String path = req.getServletPath();
+
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            resp.sendRedirect(req.getContextPath() + "/home");
+            return;
+        }
 
         if ("/login".equals(path)) {
             handleLogin(req, resp);

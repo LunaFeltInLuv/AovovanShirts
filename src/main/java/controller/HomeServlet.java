@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.List;
 
 import dao.ProductDAO;
 import jakarta.servlet.ServletException;
@@ -26,6 +27,7 @@ public class HomeServlet extends HttpServlet {
             return;
         }   
         List<Product> products = productDAO.getAllProducts();
+        
         request.setAttribute("products", products);
         request.setAttribute("pageTitle", "Trang chủ - Áo Vớ Vẩn");
         request.setAttribute("activePage", "home");
