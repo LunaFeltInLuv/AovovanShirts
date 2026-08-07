@@ -187,9 +187,20 @@
                 <input type="text" name="address" class="form-control form-control-modern" value="${sessionScope.user.address}">
             </div>
 
-            <div class="mb-5">
-                <label class="form-label-modern">Mật khẩu mới</label>
-                <input type="password" name="password" class="form-control form-control-modern" placeholder="Để trống nếu không muốn thay đổi mật khẩu">
+            <div class="mb-4">
+                <label class="form-label-modern">Mật khẩu cũ</label>
+                <input type="password" name="oldPassword" class="form-control form-control-modern" placeholder="Để trống nếu không muốn thay đổi mật khẩu">
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <label class="form-label-modern">Mật khẩu mới</label>
+                    <input type="password" name="newPassword" class="form-control form-control-modern" placeholder="Nhập mật khẩu mới">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-modern">Nhập lại mật khẩu mới</label>
+                    <input type="password" name="confirmPassword" class="form-control form-control-modern" placeholder="Nhập lại mật khẩu mới">
+                </div>
             </div>
 
             <div class="d-flex justify-content-center">

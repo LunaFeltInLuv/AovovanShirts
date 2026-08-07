@@ -24,15 +24,12 @@ public class HomeServlet extends HttpServlet {
         if (path == null || path.isEmpty() || "/".equals(path)) {
             response.sendRedirect(request.getContextPath() + "/home");
             return;
-        }
+        }   
         List<Product> products = productDAO.getAllProducts();
         request.setAttribute("products", products);
         request.setAttribute("pageTitle", "Trang chủ - Áo Vớ Vẩn");
         request.setAttribute("activePage", "home");
         request.setAttribute("contentPage", "/WEB-INF/views/client/pages/home.jsp");
-
-        request.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp")
-                .forward(request, response);
-    
+        request.getRequestDispatcher("/WEB-INF/views/client/layout/layout.jsp").forward(request, response);
     }
 }

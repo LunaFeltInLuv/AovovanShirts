@@ -45,7 +45,9 @@ public class ProfileServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String email = req.getParameter("email");
         String address = req.getParameter("address");
-        String password = req.getParameter("password");
+        String oldPassword = req.getParameter("oldPassword");
+        String newPassword = req.getParameter("newPassword");
+        String confirmPassword = req.getParameter("confirmPassword");
         
         User userToUpdate = userDAO.getUserById(sessionUser.getId());
         if (userToUpdate != null) {
@@ -54,14 +56,38 @@ public class ProfileServlet extends HttpServlet {
             userToUpdate.setEmail(email);
             userToUpdate.setAddress(address);
             
-            if (password != null && !password.trim().isEmpty()) {
-                userToUpdate.setPassword_hash(password);
+            boolean passwordChanged = false;
+            if ((oldPassword != null && !oldPassword.trim().isEmpty()) || 
+                (newPassword != null && !newPassword.trim().isEmpty()) || 
+                (confirmPassword != null && !confirmPassword.trim().isEmpty())) {
+                
+                if (!userToUpdate.getPassword_hash().equals(oldPassword)) {
+                    req.setAttribute("errorMessage", "Mật khẩu cũ không đúng.");
+                    doGet(req, resp);
+                    return;
+                }
+                if (newPassword == null || newPassword.trim().isEmpty()) {
+                    req.setAttribute("errorMessage", "Vui lòng nhập mật khẩu mới.");
+                    doGet(req, resp);
+                    return;
+                }
+                if (!newPassword.equals(confirmPassword)) {
+                    req.setAttribute("errorMessage", "Mật khẩu mới và mật khẩu nhập lại không khớp.");
+                    doGet(req, resp);
+                    return;
+                }
+                userToUpdate.setPassword_hash(newPassword);
+                passwordChanged = true;
             }
             
             boolean updated = userDAO.updateUser(userToUpdate);
             if (updated) {
                 session.setAttribute("user", userToUpdate);
-                req.setAttribute("successMessage", "Cập nhật thông tin thành công!");
+                if (passwordChanged) {
+                    req.setAttribute("successMessage", "Cập nhật thông tin và đổi mật khẩu thành công!");
+                } else {
+                    req.setAttribute("successMessage", "Cập nhật thông tin thành công!");
+                }
             } else {
                 req.setAttribute("errorMessage", "Cập nhật thông tin thất bại. Vui lòng thử lại.");
             }

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
