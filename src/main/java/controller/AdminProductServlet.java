@@ -27,6 +27,7 @@ import java.util.List;
 )
 public class AdminProductServlet extends HttpServlet {
     private ProductDAO productDAO = new ProductDAO();
+    private dao.CategoryDAO categoryDAO = new dao.CategoryDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,6 +51,7 @@ public class AdminProductServlet extends HttpServlet {
                 int id = Integer.parseInt(req.getParameter("id"));
                 Product product = productDAO.getProductById(id);
                 req.setAttribute("product", product);
+                req.setAttribute("categories", categoryDAO.getAllCategories());
                 req.setAttribute("pageTitle", "Cập nhật sản phẩm #" + id);
                 req.setAttribute("activePage", "products");
                 req.setAttribute("contentPage", "/WEB-INF/views/admin/products/product-form.jsp");
@@ -58,6 +60,7 @@ public class AdminProductServlet extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin/products");
             }
         } else if ("/admin/products/add".equals(path)) {
+            req.setAttribute("categories", categoryDAO.getAllCategories());
             req.setAttribute("pageTitle", "Thêm sản phẩm mới");
             req.setAttribute("activePage", "products");
             req.setAttribute("contentPage", "/WEB-INF/views/admin/products/product-form.jsp");

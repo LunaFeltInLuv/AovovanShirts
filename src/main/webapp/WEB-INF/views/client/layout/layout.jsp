@@ -293,7 +293,8 @@
                 <div class="container d-flex align-items-center justify-content-between">
                     <!-- Left Side: Brand Logo -->
                     <a class="navbar-brand logo-text d-flex align-items-center" href="<c:url value='/home' />">
-                        <img src="<c:url value='/assets/images/logo/logo.png' />" alt="Ao vo van" />
+                        <img src="<c:url value='/assets/images/logo/logo.png' />" alt="Ao vo van"
+                            style="width: 55px; height: auto;" />
                     </a>
 
                     <!-- Right Side on Mobile: Hamburger Button -->
