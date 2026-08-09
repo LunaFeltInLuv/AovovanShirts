@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import model.CartItem;
 import model.User;
 
-@WebServlet(urlPatterns = {"/cart", "/cart/add", "/cart/update", "/cart/remove"})
+@WebServlet(urlPatterns = { "/cart", "/cart/add", "/cart/update", "/cart/remove" })
 public class CartServlet extends HttpServlet {
     private CartDAO cartDAO = new CartDAO();
 
@@ -28,7 +28,7 @@ public class CartServlet extends HttpServlet {
 
         int cartId = cartDAO.getCartIdByUserId(user.getId());
         List<CartItem> items = cartDAO.getCartItems(cartId);
-        
+
         java.math.BigDecimal totalSum = java.math.BigDecimal.ZERO;
         for (CartItem item : items) {
             if (item.getLineTotal() != null) {
@@ -55,10 +55,12 @@ public class CartServlet extends HttpServlet {
         }
 
         String path = req.getServletPath();
+        boolean isXmlHttpRequest = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
         int cartId = cartDAO.getCartIdByUserId(user.getId());
 
         if ("/cart/add".equals(path)) {
             boolean success = false;
+            String errorMsg = null;
             try {
                 int productId = Integer.parseInt(req.getParameter("productId"));
                 int quantity = 1;
@@ -66,24 +68,29 @@ public class CartServlet extends HttpServlet {
                 if (qtyStr != null && !qtyStr.trim().isEmpty()) {
                     quantity = Integer.parseInt(qtyStr);
                 }
-                success = cartDAO.addToCart(user.getId(), productId, quantity);
+                errorMsg = cartDAO.addToCartWithMessage(user.getId(), productId, quantity);
+                success = (errorMsg == null);
             } catch (Exception e) {
                 e.printStackTrace();
+                errorMsg = e.getMessage();
             }
 
-            String requestedWith = req.getHeader("X-Requested-With");
-            if ("XMLHttpRequest".equals(requestedWith)) {
+            if (isXmlHttpRequest) {
                 resp.setContentType("application/json;charset=UTF-8");
                 if (success) {
-                    resp.getWriter().write("{\"success\":true,\"message\":\"Đã thêm sản phẩm vào giỏ hàng thành công!\"}");
+                    resp.getWriter()
+                            .write("{\"success\":true,\"message\":\"Đã thêm sản phẩm vào giỏ hàng thành công!\"}");
                 } else {
-                    resp.getWriter().write("{\"success\":false,\"message\":\"Không thể thêm sản phẩm (sản phẩm đã hết hàng hoặc ngừng bán)!\"}");
+                    String cleanMsg = (errorMsg != null) ? errorMsg.replace("\"", "\\\"").replace("\n", " ") : "Không thể thêm sản phẩm vào giỏ hàng!";
+                    resp.getWriter().write(
+                            "{\"success\":false,\"message\":\"" + cleanMsg + "\"}");
                 }
                 return;
             }
 
             if (!success) {
-                req.getSession().setAttribute("cartError", "Không thể thêm sản phẩm vào giỏ hàng (sản phẩm có thể đã hết hàng hoặc ngừng bán)!");
+                req.getSession().setAttribute("cartError",
+                        errorMsg != null ? errorMsg : "Không thể thêm sản phẩm vào giỏ hàng!");
             }
             resp.sendRedirect(req.getContextPath() + "/cart");
         } else if ("/cart/update".equals(path)) {
@@ -95,8 +102,7 @@ public class CartServlet extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String requestedWith = req.getHeader("X-Requested-With");
-            if ("XMLHttpRequest".equals(requestedWith)) {
+            if (isXmlHttpRequest) {
                 resp.setContentType("application/json;charset=UTF-8");
                 resp.getWriter().write("{\"success\":" + updated + "}");
                 return;

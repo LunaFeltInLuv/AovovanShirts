@@ -44,6 +44,12 @@ public class AuthFilter implements Filter {
         // Protected paths require login
         boolean isProtected = path.startsWith("/cart") || path.startsWith("/checkout") || path.startsWith("/orders") || path.startsWith("/admin");
         if (isProtected && user == null) {
+            String requestedWith = req.getHeader("X-Requested-With");
+            if ("XMLHttpRequest".equals(requestedWith)) {
+                resp.setContentType("application/json;charset=UTF-8");
+                resp.getWriter().write("{\"success\":false,\"redirect\":\"" + req.getContextPath() + "/login?error=auth_required\",\"message\":\"Vui lòng đăng nhập để thực hiện tính năng này!\"}");
+                return;
+            }
             resp.sendRedirect(req.getContextPath() + "/login?error=auth_required");
             return;
         }

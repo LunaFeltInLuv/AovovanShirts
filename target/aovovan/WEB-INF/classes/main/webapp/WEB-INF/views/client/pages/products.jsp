@@ -21,45 +21,44 @@
 
                 <div class="row g-3 g-md-4">
                     <c:forEach var="p" items="${products}">
-                        <a href="<c:url value='/product-detail?id=${p.id}' />">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card h-100 border-0 position-relative">
+                                <div class="position-relative overflow-hidden"
+                                    style="border-radius: 16px 16px 0 0;">
+                                    <img src="${empty p.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : p.imageUrl}"
+                                        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';"
+                                        class="card-img-top" alt="${p.name}"
+                                        style="height: 240px; object-fit: cover; transition: transform 0.3s ease;">
+                                </div>
+                                <div class="card-body d-flex flex-column p-3 p-md-4">
+                                    <span class="small text-uppercase font-semibold mb-1"
+                                        style="color: var(--text-muted);">
+                                        <c:out value="${p.category}" />
+                                    </span>
 
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card h-100 border-0">
-                                    <div class="position-relative overflow-hidden"
-                                        style="border-radius: 16px 16px 0 0;">
-                                        <img src="${empty p.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : p.imageUrl}"
-                                            onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';"
-                                            class="card-img-top" alt="${p.name}"
-                                            style="height: 240px; object-fit: cover; transition: transform 0.3s ease;">
-                                    </div>
-                                    <div class="card-body d-flex flex-column p-3 p-md-4">
-                                        <span class="small text-uppercase font-semibold mb-1"
-                                            style="color: var(--text-muted);">
-                                            <c:out value="${p.category}" />
-                                        </span>
-
-                                        <h5 class="card-title text-dark font-bold mb-2 fs-6">
+                                    <h5 class="card-title text-dark font-bold mb-2 fs-6">
+                                        <a href="<c:url value='/product-detail?id=${p.id}' />" class="stretched-link text-decoration-none text-dark">
                                             <c:out value="${p.name}" />
-                                        </h5>
+                                        </a>
+                                    </h5>
 
-                                        <p class="card-text font-bold fs-5 mb-3"
-                                            style="color: var(--primary-color) !important;">
-                                            <fmt:formatNumber value="${p.price}" pattern="#,##0" /> VNĐ
-                                        </p>
-                                        <div class="mt-auto d-flex justify-content-between gap-2">
-                                            <a href="<c:url value='/product-detail?id=${p.id}' />"
-                                                class="btn btn-outline-warning btn-sm font-semibold flex-grow-1">Chi
-                                                tiết</a>
-                                            <form action="<c:url value='/cart/add' />" method="post" class="d-inline">
-                                                <input type="hidden" name="productId" value="${p.id}">
-                                                <button type="submit" class="btn btn-warning btn-sm px-3"
-                                                    title="Thêm vào giỏ"><i class="bi bi-cart-plus-fill"></i></button>
-                                            </form>
-                                        </div>
+                                    <p class="card-text font-bold fs-5 mb-3"
+                                        style="color: var(--primary-color) !important;">
+                                        <fmt:formatNumber value="${p.price}" pattern="#,##0" /> VNĐ
+                                    </p>
+                                    <div class="mt-auto d-flex justify-content-between gap-2 position-relative z-1">
+                                        <a href="<c:url value='/product-detail?id=${p.id}' />"
+                                            class="btn btn-outline-warning btn-sm font-semibold flex-grow-1">Chi
+                                            tiết</a>
+                                        <form action="<c:url value='/cart/add' />" method="post" class="d-inline">
+                                            <input type="hidden" name="productId" value="${p.id}">
+                                            <button type="submit" class="btn btn-warning btn-sm px-3"
+                                                title="Thêm vào giỏ"><i class="bi bi-cart-plus-fill"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>

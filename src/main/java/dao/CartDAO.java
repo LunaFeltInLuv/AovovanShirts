@@ -26,7 +26,7 @@ public class CartDAO {
         return -1;
     }
 
-    public boolean addToCart(int userId, int productId, int quantity) {
+    public String addToCartWithMessage(int userId, int productId, int quantity) {
         String sql = "{call sp_add_to_cart(?, ?, ?)}";
         try (Connection con = ConnectDB.getConnect();
              CallableStatement cs = con.prepareCall(sql)) {
@@ -34,11 +34,15 @@ public class CartDAO {
             cs.setInt(2, productId);
             cs.setInt(3, quantity);
             cs.execute();
-            return true;
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return e.getMessage();
         }
-        return false;
+    }
+
+    public boolean addToCart(int userId, int productId, int quantity) {
+        return addToCartWithMessage(userId, productId, quantity) == null;
     }
 
     public List<CartItem> getCartItems(int cartId) {
