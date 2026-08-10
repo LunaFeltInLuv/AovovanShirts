@@ -36,7 +36,7 @@
                                     </span>
 
                                     <h5 class="card-title text-dark font-bold mb-2 fs-6">
-
+                                        <c:out value="${p.name}" />
                                     </h5>               
 
                                     <p class="card-text font-bold fs-5 mb-3"

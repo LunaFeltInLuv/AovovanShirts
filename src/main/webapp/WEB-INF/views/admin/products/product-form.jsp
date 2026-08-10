@@ -14,8 +14,7 @@
                     </a>
                 </div>
                 <div class="card-body py-4">
-                    <form action="<c:url value='${empty product ? " /admin/products/add" : "/admin/products/update"
-                        }' />" method="post" enctype="multipart/form-data">
+                    <form action="<c:url value='${empty product ? "/admin/products/add" : "/admin/products/update"}' />" method="post" enctype="multipart/form-data">
                     <c:if test="${not empty product}">
                         <input type="hidden" name="id" value="${product.id}">
                     </c:if>
@@ -52,8 +51,9 @@
                         <select name="category" class="form-select">
                             <option value="">-- Chọn danh mục --</option>
                             <c:forEach var="cat" items="${categories}">
-                                <option value="<c:out value='${cat.name}'/>" ${product.category == cat.name ? 'selected' : ''}>
-                                    <c:out value='${cat.name}'/>
+                                <option value="<c:out value='${cat.name}'/>" ${product.category==cat.name ? 'selected'
+                                    : '' }>
+                                    <c:out value='${cat.name}' />
                                 </option>
                             </c:forEach>
                         </select>
