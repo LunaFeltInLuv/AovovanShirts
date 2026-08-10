@@ -334,6 +334,16 @@
                                 </a>
                             </c:if>
                         </nav>
+                        
+                        <!-- Header Search Bar -->
+                        <form action="<c:url value='/products' />" method="get" class="d-flex me-3 my-3 my-lg-0" style="max-width: 300px; width: 100%;">
+                            <div class="input-group rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--border-color); background-color: #F8FAFC;">
+                                <input class="form-control border-0 bg-transparent" type="search" name="keyword" value="${keyword}"
+                                    placeholder="Tìm kiếm áo..." aria-label="Search" style="box-shadow: none; font-size: 0.95rem; padding-left: 1.25rem;">
+                                <button class="btn border-0 bg-transparent" type="submit" style="color: var(--text-muted); padding-right: 1.25rem;"><i class="bi bi-search"></i></button>
+                            </div>
+                        </form>
+
                         <div class="d-flex align-items-center gap-3 user-mobile-actions">
                             <c:choose>
                                 <c:when test="${not empty sessionScope.user}">
