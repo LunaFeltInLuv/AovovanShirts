@@ -21,6 +21,7 @@ import java.util.List;
     "/admin/variants",
     "/admin/variants/add",
     "/admin/variants/delete",
+    "/admin/variants/clone",
     "/admin/colors/add",
     "/admin/colors/delete",
     "/admin/sizes/add",
@@ -111,6 +112,31 @@ public class AdminVariantServlet extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin/variants?productId=" + productId + "&tab=variants");
             } catch (Exception e) {
                 e.printStackTrace();
+                resp.sendRedirect(req.getContextPath() + "/admin/variants");
+            }
+        } else if ("/admin/variants/clone".equals(path)) {
+            try {
+                int targetProductId = Integer.parseInt(req.getParameter("targetProductId"));
+                int sourceProductId = Integer.parseInt(req.getParameter("sourceProductId"));
+                int defaultStock = Integer.parseInt(req.getParameter("defaultStock"));
+
+                List<ProductVariant> sourceVariants = variantDAO.getVariantsByProductId(sourceProductId);
+                int count = 0;
+                for (ProductVariant v : sourceVariants) {
+                    ProductVariant pv = new ProductVariant();
+                    pv.setProductId(targetProductId);
+                    pv.setColorId(v.getColorId());
+                    pv.setSizeId(v.getSizeId());
+                    pv.setStockQuantity(defaultStock);
+                    
+                    variantDAO.addOrUpdateVariant(pv);
+                    count++;
+                }
+                req.getSession().setAttribute("successMessage", "Đã sao chép thành công " + count + " biến thể!");
+                resp.sendRedirect(req.getContextPath() + "/admin/variants?productId=" + targetProductId + "&tab=variants");
+            } catch (Exception e) {
+                e.printStackTrace();
+                req.getSession().setAttribute("errorMessage", "Có lỗi xảy ra khi sao chép biến thể!");
                 resp.sendRedirect(req.getContextPath() + "/admin/variants");
             }
         } else if ("/admin/colors/add".equals(path)) {

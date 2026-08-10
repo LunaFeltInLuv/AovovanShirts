@@ -62,10 +62,13 @@
                                 </c:if>
                             </select>
                         </div>
-                        <div class="col-12 col-md-4 d-flex align-items-end">
+                        <div class="col-12 col-md-4 d-flex align-items-end gap-2">
                             <c:if test="${selectedProduct ne null}">
-                                <button type="button" class="btn btn-primary btn-lg w-100 font-semibold mt-md-4" data-bs-toggle="modal" data-bs-target="#addVariantModal">
-                                    <i class="bi bi-plus-circle-fill me-2"></i> Thêm Biến Thể Cho Sản Phẩm
+                                <button type="button" class="btn btn-primary btn-lg flex-grow-1 font-semibold mt-md-4" data-bs-toggle="modal" data-bs-target="#addVariantModal">
+                                    <i class="bi bi-plus-circle-fill"></i> Thêm
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg flex-grow-1 font-semibold mt-md-4" data-bs-toggle="modal" data-bs-target="#cloneVariantModal">
+                                    <i class="bi bi-copy"></i> Sao chép
                                 </button>
                             </c:if>
                         </div>
@@ -335,6 +338,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Clone Variant Modal -->
+    <div class="modal fade" id="cloneVariantModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <form action="<c:url value='/admin/variants/clone' />" method="post">
+                    <input type="hidden" name="targetProductId" value="${selectedProduct.id}"/>
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title text-white">
+                            <i class="bi bi-copy me-2"></i>Sao chép biến thể cho: <c:out value="${selectedProduct.name}"/>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label for="sourceProductSelect" class="form-label font-semibold">Chọn sản phẩm nguồn để copy:</label>
+                            <select class="form-select" id="sourceProductSelect" name="sourceProductId" required>
+                                <option value="">-- Chọn sản phẩm --</option>
+                                <c:forEach var="p" items="${products}">
+                                    <c:if test="${p.id ne selectedProduct.id}">
+                                        <option value="${p.id}">${p.name}</option>
+                                    </c:if>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cloneVarStock" class="form-label font-semibold">Tồn kho mặc định (cho tất cả biến thể copy):</label>
+                            <input type="number" class="form-control" id="cloneVarStock" name="defaultStock" min="0" value="10" required/>
+                        </div>
+                        <div class="alert alert-info mt-3 mb-0 text-sm">
+                            <i class="bi bi-info-circle me-1"></i>Hệ thống sẽ sao chép toàn bộ biến thể từ sản phẩm nguồn sang sản phẩm hiện tại. Các biến thể trùng lặp sẽ bị bỏ qua.
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success font-semibold">Thực hiện Copy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </c:if>
 
 <!-- jQuery & Select2 cho tính năng tìm kiếm Dropdown -->
@@ -357,6 +401,7 @@
         height: calc(3.5rem + 2px);
         right: 15px;
     }
+
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -368,7 +413,11 @@
             width: '100%'
         });
         
-        // Fix issue where Select2 dropdown search doesn't get focus in Bootstrap Modals (if used in modal)
-        // Here we just use it on the main page, so standard init is fine.
+        $('#sourceProductSelect').select2({
+            placeholder: 'Tìm sản phẩm nguồn...',
+            dropdownParent: $('#cloneVariantModal'),
+            allowClear: true,
+            width: '100%'
+        });
     });
 </script>

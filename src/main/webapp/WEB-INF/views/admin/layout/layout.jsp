@@ -78,7 +78,8 @@
                     }
 
                     #sidebar {
-                        z-index: 999 !important;
+                        z-index: 9999 !important;
+                        position: relative;
                     }
                 }
             </style>
@@ -92,14 +93,13 @@
                         <div class="sidebar-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="logo">
-                                    <a href="<c:url value='/admin' />"
-                                        class="text-warning font-weight-bold h4 text-decoration-none">
-                                        <img src="<c:url value='/assets/images/logo/logo.png' />" alt="Logo" style="height: 55px; vertical-align: middle;" class="me-2"><span style="color: #A8A492; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">ADMIN PAGE</span>
+                                    <a href="<c:url value='/admin' />" class="text-warning font-weight-bold text-decoration-none d-flex align-items-center">
+                                        <img src="<c:url value='/assets/images/logo/logo.png' />" alt="Logo" style="height: 50px; object-fit: contain;" class="me-2">
+                                        <span style="color: #A8A492; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1.25rem; white-space: nowrap; line-height: 1;">ADMIN PAGE</span>
                                     </a>
                                 </div>
                                 <div class="toggler">
-                                    <a href="#" class="sidebar-hide d-xl-none d-block"><i
-                                            class="bi bi-x bi-middle"></i></a>
+                                    <a href="#" class="sidebar-hide d-xl-none d-block fs-3"><i class="bi bi-x bi-middle text-primary"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +173,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <button class="sidebar-toggler btn x"><i class="bi bi-x"></i></button>
                     </div>
                 </div>
 
