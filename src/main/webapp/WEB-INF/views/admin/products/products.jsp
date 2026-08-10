@@ -61,6 +61,9 @@
                                     </c:choose>
                                 </td>
                                 <td class="text-end pe-3">
+                                    <a href="<c:url value='/admin/variants?productId=${p.id}' />" class="btn btn-light-info btn-sm me-1" title="Quản lý biến thể màu sắc & size">
+                                        <i class="bi bi-tags-fill"></i>
+                                    </a>
                                     <a href="<c:url value='/admin/products/update?id=${p.id}' />" class="btn btn-light-primary btn-sm me-1" title="Chỉnh sửa">
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>

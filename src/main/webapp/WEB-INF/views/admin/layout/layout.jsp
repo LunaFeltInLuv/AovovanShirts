@@ -143,6 +143,13 @@
                                     </a>
                                 </li>
 
+                                <li class="sidebar-item ${activePage eq 'variants' ? 'active' : ''}">
+                                    <a href="<c:url value='/admin/variants' />" class='sidebar-link'>
+                                        <i class="bi bi-tags-fill"></i>
+                                        <span>Quản lý biến thể</span>
+                                    </a>
+                                </li>
+
                                 <li class="sidebar-item ${activePage eq 'revenue' ? 'active' : ''}">
                                     <a href="<c:url value='/admin/revenue' />" class='sidebar-link'>
                                         <i class="bi bi-graph-up-arrow"></i>

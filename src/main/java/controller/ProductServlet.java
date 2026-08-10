@@ -26,7 +26,9 @@ public class ProductServlet extends HttpServlet {
                     int id = Integer.parseInt(idStr);
                     Product product = productDAO.getProductById(id);
                     if (product != null) {
+                        List<model.ProductVariant> variants = new dao.ProductVariantDAO().getVariantsByProductId(id);
                         req.setAttribute("product", product);
+                        req.setAttribute("variants", variants);
                         req.setAttribute("pageTitle", product.getName() + " - Áo Vớ Vẩn");
                         req.setAttribute("activePage", "products");
                         req.setAttribute("contentPage", "/WEB-INF/views/client/pages/product-detail.jsp");

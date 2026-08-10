@@ -11,7 +11,7 @@ import model.Color;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/admin/colors", "/admin/colors/add", "/admin/colors/delete"})
+@WebServlet(urlPatterns = {"/admin/colors"})
 public class AdminColorServlet extends HttpServlet {
     private ColorDAO colorDAO = new ColorDAO();
 

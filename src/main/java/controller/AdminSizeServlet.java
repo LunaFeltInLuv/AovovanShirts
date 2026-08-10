@@ -11,7 +11,7 @@ import model.Size;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/admin/sizes", "/admin/sizes/add", "/admin/sizes/delete"})
+@WebServlet(urlPatterns = {"/admin/sizes"})
 public class AdminSizeServlet extends HttpServlet {
     private SizeDAO sizeDAO = new SizeDAO();
 
