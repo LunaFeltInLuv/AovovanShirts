@@ -426,12 +426,10 @@
                                 hiện đại. Khám phá chất riêng của bạn cùng chúng tôi.
                             </p>
                             <div class="d-flex gap-3">
-                                <a href="#" class="text-muted footer-social-link"><i
+                                <a href="https://facebook.com/aovovan.store" class="text-muted footer-social-link" target="_blank"><i
                                         class="bi bi-facebook fs-5"></i></a>
-                                <a href="#" class="text-muted footer-social-link"><i
+                                <a href="https://instagram.com/aovovan.store" class="text-muted footer-social-link" target="_blank"><i
                                         class="bi bi-instagram fs-5"></i></a>
-                                <a href="#" class="text-muted footer-social-link"><i class="bi bi-tiktok fs-5"></i></a>
-                                <a href="#" class="text-muted footer-social-link"><i class="bi bi-youtube fs-5"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-6 col-6">

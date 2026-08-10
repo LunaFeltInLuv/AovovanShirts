@@ -81,7 +81,7 @@ public class ProductDAO {
         List<Product> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM products WHERE is_active = 1 ");
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND (name LIKE ? OR description LIKE ?) ");
+            sql.append("AND (name COLLATE Vietnamese_CI_AI LIKE ? OR description COLLATE Vietnamese_CI_AI LIKE ?) ");
         }
         if (category != null && !category.trim().isEmpty()) {
             sql.append("AND category = ? ");
