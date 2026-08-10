@@ -11,7 +11,7 @@
             </title>
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
-            <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
+            <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap"
                 rel="stylesheet">
             <link rel="stylesheet" href="<c:url value='/assets/css/bootstrap.css' />">
             <link rel="stylesheet" href="<c:url value='/assets/vendors/perfect-scrollbar/perfect-scrollbar.css' />">
@@ -94,7 +94,7 @@
                                 <div class="logo">
                                     <a href="<c:url value='/admin' />"
                                         class="text-warning font-weight-bold h4 text-decoration-none">
-                                        <i class="bi bi-shield-lock me-1"></i>ADMIN PAGE
+                                        <img src="<c:url value='/assets/images/logo/logo.png' />" alt="Logo" style="height: 55px; vertical-align: middle;" class="me-2"><span style="color: #A8A492; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">ADMIN PAGE</span>
                                     </a>
                                 </div>
                                 <div class="toggler">
