@@ -14,10 +14,10 @@
                         style="background-color: rgba(255,255,255,0.2) !important; backdrop-filter: blur(4px); border-radius: 8px;">BST
                         2026</span>
                     <h1 class="display-5 font-bold mb-3 text-white"
-                        style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em;">Thời Trang Độc Lạ
-                        <br />ÁO VỚ VẦN</h1>
+                        style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em;">Bạn hài hước?   
+                        <br />Đến ngay với Áo Vớ Vẩn!</h1>
                     <p class="lead mb-4 text-white-50" style="max-width: 600px; font-weight: 500;">Bộ sưu tập áo thời
-                        trang cực ngầu, thiết kế độc bản và chất lượng cao dành cho thế hệ trẻ năng động.</p>
+                        trang cực kì vớ vẩn, thiết kế độc lạ, chất vải siêu oách, phù hợp cho đủ lứa tuổi.</p>
                     <a class="btn btn-light btn-lg font-bold px-4 py-2 text-uppercase"
                         href="<c:url value='/products' />" role="button"
                         style="color: var(--primary-color) !important; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
