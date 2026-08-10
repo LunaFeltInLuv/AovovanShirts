@@ -11,7 +11,7 @@ import model.User;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/profile"})
+@WebServlet(urlPatterns = { "/profile" })
 public class ProfileServlet extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
 
@@ -32,7 +32,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        
+
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
@@ -40,7 +40,7 @@ public class ProfileServlet extends HttpServlet {
         }
 
         User sessionUser = (User) session.getAttribute("user");
-        
+
         String name = req.getParameter("name");
         String phone = req.getParameter("phone");
         String email = req.getParameter("email");
@@ -49,7 +49,7 @@ public class ProfileServlet extends HttpServlet {
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
         String confirmPassword = req.getParameter("confirmPassword");
-        
+
         User userToUpdate = userDAO.getUserById(sessionUser.getId());
         if (userToUpdate != null) {
             userToUpdate.setName(name);
@@ -61,12 +61,12 @@ public class ProfileServlet extends HttpServlet {
             } else {
                 userToUpdate.setProfilePictureURL(null);
             }
-            
+
             boolean passwordChanged = false;
-            if ((oldPassword != null && !oldPassword.trim().isEmpty()) || 
-                (newPassword != null && !newPassword.trim().isEmpty()) || 
-                (confirmPassword != null && !confirmPassword.trim().isEmpty())) {
-                
+            if ((oldPassword != null && !oldPassword.trim().isEmpty()) ||
+                    (newPassword != null && !newPassword.trim().isEmpty()) ||
+                    (confirmPassword != null && !confirmPassword.trim().isEmpty())) {
+
                 if (!userToUpdate.getPassword_hash().equals(oldPassword)) {
                     req.setAttribute("errorMessage", "Mật khẩu cũ không đúng.");
                     doGet(req, resp);
@@ -85,7 +85,7 @@ public class ProfileServlet extends HttpServlet {
                 userToUpdate.setPassword_hash(newPassword);
                 passwordChanged = true;
             }
-            
+
             boolean updated = userDAO.updateUser(userToUpdate);
             if (updated) {
                 session.setAttribute("user", userToUpdate);
@@ -100,7 +100,7 @@ public class ProfileServlet extends HttpServlet {
         } else {
             req.setAttribute("errorMessage", "Không tìm thấy người dùng.");
         }
-        
+
         doGet(req, resp);
     }
 }

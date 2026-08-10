@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import model.CartItem;
 import model.User;
 
-@WebServlet(urlPatterns = { "/cart", "/cart/add", "/cart/update", "/cart/remove" })
+@WebServlet({ "/cart", "/cart/add", "/cart/update", "/cart/remove" })
 public class CartServlet extends HttpServlet {
     private CartDAO cartDAO = new CartDAO();
 
@@ -26,8 +26,7 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        int cartId = cartDAO.getCartIdByUserId(user.getId());
-        List<CartItem> items = cartDAO.getCartItems(cartId);
+        List<CartItem> items = cartDAO.getCartItemsByUserId(user.getId());
 
         java.math.BigDecimal totalSum = java.math.BigDecimal.ZERO;
         for (CartItem item : items) {
@@ -49,27 +48,48 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
+        boolean isXmlHttpRequest = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
+
         if (user == null) {
+            if (isXmlHttpRequest) {
+                resp.setContentType("application/json;charset=UTF-8");
+                resp.getWriter().write("{\"success\":false,\"redirect\":\"" + req.getContextPath() + "/login\",\"message\":\"Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!\"}");
+                return;
+            }
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
         String path = req.getServletPath();
-        boolean isXmlHttpRequest = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
         int cartId = cartDAO.getCartIdByUserId(user.getId());
 
         if ("/cart/add".equals(path)) {
             boolean success = false;
             String errorMsg = null;
             try {
-                int productId = Integer.parseInt(req.getParameter("productId"));
-                int quantity = 1;
-                String qtyStr = req.getParameter("quantity");
-                if (qtyStr != null && !qtyStr.trim().isEmpty()) {
-                    quantity = Integer.parseInt(qtyStr);
+                String productIdStr = req.getParameter("productId");
+                if (productIdStr == null || productIdStr.trim().isEmpty()) {
+                    productIdStr = req.getParameter("id");
                 }
-                errorMsg = cartDAO.addToCartWithMessage(user.getId(), productId, quantity);
-                success = (errorMsg == null);
+
+                if (productIdStr == null || productIdStr.trim().isEmpty()) {
+                    errorMsg = "Không tìm thấy mã sản phẩm!";
+                } else {
+                    int productId = Integer.parseInt(productIdStr.trim());
+                    int quantity = 1;
+                    String qtyStr = req.getParameter("quantity");
+                    if (qtyStr != null && !qtyStr.trim().isEmpty()) {
+                        quantity = Integer.parseInt(qtyStr.trim());
+                    }
+                    if (quantity <= 0) {
+                        errorMsg = "Số lượng mua phải lớn hơn 0!";
+                    } else {
+                        errorMsg = cartDAO.addToCartWithMessage(user.getId(), productId, quantity);
+                        success = (errorMsg == null);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                errorMsg = "Mã sản phẩm hoặc số lượng không hợp lệ!";
             } catch (Exception e) {
                 e.printStackTrace();
                 errorMsg = e.getMessage();
@@ -81,7 +101,9 @@ public class CartServlet extends HttpServlet {
                     resp.getWriter()
                             .write("{\"success\":true,\"message\":\"Đã thêm sản phẩm vào giỏ hàng thành công!\"}");
                 } else {
-                    String cleanMsg = (errorMsg != null) ? errorMsg.replace("\"", "\\\"").replace("\n", " ") : "Không thể thêm sản phẩm vào giỏ hàng!";
+                    String cleanMsg = (errorMsg != null)
+                            ? errorMsg.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", "")
+                            : "Không thể thêm sản phẩm vào giỏ hàng!";
                     resp.getWriter().write(
                             "{\"success\":false,\"message\":\"" + cleanMsg + "\"}");
                 }

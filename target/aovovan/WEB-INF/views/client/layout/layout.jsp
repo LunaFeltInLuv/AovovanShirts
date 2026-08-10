@@ -594,12 +594,16 @@
                             })
                             .then(data => {
                                 if (data) {
-                                    showToast(data.message || 'Đã thêm sản phẩm vào giỏ hàng!', data.success);
+                                    if (data.redirect) {
+                                        window.location.href = data.redirect;
+                                        return;
+                                    }
+                                    showToast(data.message || (data.success ? 'Đã thêm sản phẩm vào giỏ hàng!' : 'Không thể thêm sản phẩm vào giỏ hàng!'), data.success);
                                 }
                             })
                             .catch(err => {
-                                console.error(err);
-                                showToast('Đã thêm sản phẩm vào giỏ hàng thành công!', true);
+                                console.error('Cart add error:', err);
+                                showToast('Vui lòng đăng nhập hoặc thử lại sau!', false);
                             });
                     }
                 });

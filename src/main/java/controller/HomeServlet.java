@@ -2,8 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.List;
-
 import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

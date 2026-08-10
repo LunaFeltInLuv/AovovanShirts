@@ -108,7 +108,6 @@ public class AuthServlet extends HttpServlet {
         user.setEmail(email);
         user.setAddress(address);
         user.setActive(true);
-
         int userId = userDAO.addUser(user, null);
         if (userId > 0) {
             resp.sendRedirect(req.getContextPath() + "/login?registered=true");

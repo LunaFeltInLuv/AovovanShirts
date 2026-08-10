@@ -23,8 +23,7 @@
                     <c:forEach var="p" items="${products}">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="card h-100 border-0 position-relative">
-                                <div class="position-relative overflow-hidden"
-                                    style="border-radius: 16px 16px 0 0;">
+                                <div class="position-relative overflow-hidden" style="border-radius: 16px 16px 0 0;">
                                     <img src="${empty p.imageUrl ? pageContext.request.contextPath.concat('/assets/images/placeholder.svg') : p.imageUrl}"
                                         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/placeholder.svg';"
                                         class="card-img-top" alt="${p.name}"
@@ -37,10 +36,8 @@
                                     </span>
 
                                     <h5 class="card-title text-dark font-bold mb-2 fs-6">
-                                        <a href="<c:url value='/product-detail?id=${p.id}' />" class="stretched-link text-decoration-none text-dark">
-                                            <c:out value="${p.name}" />
-                                        </a>
-                                    </h5>
+
+                                    </h5>               
 
                                     <p class="card-text font-bold fs-5 mb-3"
                                         style="color: var(--primary-color) !important;">
