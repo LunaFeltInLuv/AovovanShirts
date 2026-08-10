@@ -14,11 +14,11 @@ public class ReportDAO {
 
     public List<ReportItem> getRevenueByDate() {
         List<ReportItem> list = new ArrayList<>();
-        // Lấy doanh thu theo thời gian hh:mm:ss của các đơn hàng đã hoàn thành
-        String sql = "SELECT CONVERT(VARCHAR(8), order_date, 108) AS label, SUM(total_amount) AS revenue " +
+        // Lấy doanh thu theo ngày (dd-mm-yyyy) của các đơn hàng đã hoàn thành
+        String sql = "SELECT CONVERT(VARCHAR(10), order_date, 105) AS label, SUM(total_amount) AS revenue " +
                      "FROM orders " +
                      "WHERE status = 'delivered' " +
-                     "GROUP BY CONVERT(VARCHAR(8), order_date, 108) " +
+                     "GROUP BY CONVERT(VARCHAR(10), order_date, 105) " +
                      "ORDER BY label ASC";
         try (Connection con = ConnectDB.getConnect();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -30,6 +30,34 @@ public class ReportDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public java.math.BigDecimal getTotalRevenue() {
+        String sql = "SELECT ISNULL(SUM(total_amount), 0) FROM orders WHERE status = 'delivered'";
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getBigDecimal(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return java.math.BigDecimal.ZERO;
+    }
+
+    public int getDeliveredOrderCount() {
+        String sql = "SELECT COUNT(*) FROM orders WHERE status = 'delivered'";
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public List<ReportItem> getTopCustomers(int limit) {

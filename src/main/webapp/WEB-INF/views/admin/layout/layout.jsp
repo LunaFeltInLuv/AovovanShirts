@@ -143,6 +143,13 @@
                                     </a>
                                 </li>
 
+                                <li class="sidebar-item ${activePage eq 'revenue' ? 'active' : ''}">
+                                    <a href="<c:url value='/admin/revenue' />" class='sidebar-link'>
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                        <span>Báo cáo doanh thu</span>
+                                    </a>
+                                </li>
+
                                 <li class="sidebar-title">Hệ thống</li>
 
                                 <li class="sidebar-item">

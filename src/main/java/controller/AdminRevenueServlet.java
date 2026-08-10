@@ -20,10 +20,14 @@ public class AdminRevenueServlet extends HttpServlet {
         List<ReportItem> revenueByDate = reportDAO.getRevenueByDate();
         List<ReportItem> topCustomers = reportDAO.getTopCustomers(5);
         List<ReportItem> topProducts = reportDAO.getTopProducts(5);
+        java.math.BigDecimal totalRevenue = reportDAO.getTotalRevenue();
+        int totalOrders = reportDAO.getDeliveredOrderCount();
 
         req.setAttribute("revenueByDate", revenueByDate);
         req.setAttribute("topCustomers", topCustomers);
         req.setAttribute("topProducts", topProducts);
+        req.setAttribute("totalRevenue", totalRevenue);
+        req.setAttribute("totalOrders", totalOrders);
 
         req.setAttribute("pageTitle", "Báo cáo doanh thu");
         req.setAttribute("activePage", "revenue");

@@ -1,6 +1,38 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="vi_VN"/>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                    <h6 class="text-muted font-semibold text-uppercase mb-1">Tổng Doanh Thu</h6>
+                    <h3 class="font-extrabold text-success mb-0">
+                        <fmt:formatNumber value="${empty totalRevenue ? 0 : totalRevenue}" pattern="#,##0"/> VNĐ
+                    </h3>
+                </div>
+                <div class="avatar bg-light-success p-3 rounded-circle" style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-cash-stack text-success fs-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                    <h6 class="text-muted font-semibold text-uppercase mb-1">Đơn Hàng Thành Công</h6>
+                    <h3 class="font-extrabold text-primary mb-0">${empty totalOrders ? 0 : totalOrders} đơn</h3>
+                </div>
+                <div class="avatar bg-light-primary p-3 rounded-circle" style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-bag-check-fill text-primary fs-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row mb-4">
     <div class="col-12">
