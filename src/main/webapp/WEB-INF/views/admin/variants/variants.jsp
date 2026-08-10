@@ -51,6 +51,7 @@
                         <div class="col-12 col-md-8">
                             <label for="productSelect" class="form-label font-semibold">Chọn Sản Phẩm Cần Quản Lý:</label>
                             <select class="form-select form-select-lg" id="productSelect" name="productId" onchange="this.form.submit()">
+                                <option value="">-- Chọn sản phẩm --</option>
                                 <c:forEach var="p" items="${products}">
                                     <option value="${p.id}" ${selectedProduct ne null and selectedProduct.id eq p.id ? 'selected' : ''}>
                                         ${p.name} - (<fmt:formatNumber value="${p.price}" pattern="#,##0"/> VNĐ)
@@ -335,3 +336,39 @@
         </div>
     </div>
 </c:if>
+
+<!-- jQuery & Select2 cho tính năng tìm kiếm Dropdown -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    /* Chỉnh sửa style của Select2 để hợp với theme Bootstrap 5 */
+    .select2-container .select2-selection--single {
+        height: calc(3.5rem + 2px);
+        padding: 0.75rem 1.25rem;
+        font-size: 1.25rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 1.5;
+        padding-left: 0;
+        color: #212529;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: calc(3.5rem + 2px);
+        right: 15px;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#productSelect').select2({
+            placeholder: 'Vui lòng chọn sản phẩm...',
+            allowClear: true,
+            width: '100%'
+        });
+        
+        // Fix issue where Select2 dropdown search doesn't get focus in Bootstrap Modals (if used in modal)
+        // Here we just use it on the main page, so standard init is fine.
+    });
+</script>
