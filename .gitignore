@@ -2,3 +2,6 @@
 .agents/
 .env
 .env.*
+src/main/webapp/assets/images/products/
+target/aovovan/assets/images/products/
+target/
