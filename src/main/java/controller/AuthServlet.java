@@ -95,10 +95,22 @@ public class AuthServlet extends HttpServlet {
     private void handleRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
         String name = req.getParameter("name");
         String phone = req.getParameter("phone");
         String email = req.getParameter("email");
         String address = req.getParameter("address");
+
+        if (password == null || confirmPassword == null || !password.equals(confirmPassword)) {
+            req.setAttribute("error", "Mật khẩu xác nhận không khớp!");
+            req.setAttribute("username", username);
+            req.setAttribute("name", name);
+            req.setAttribute("phone", phone);
+            req.setAttribute("email", email);
+            req.setAttribute("address", address);
+            doGet(req, resp);
+            return;
+        }
 
         User user = new User();
         user.setUsername(username);
@@ -113,6 +125,11 @@ public class AuthServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login?registered=true");
         } else {
             req.setAttribute("error", "Đăng ký thất bại! Kiểm tra thông tin (username/email có thể đã tồn tại).");
+            req.setAttribute("username", username);
+            req.setAttribute("name", name);
+            req.setAttribute("phone", phone);
+            req.setAttribute("email", email);
+            req.setAttribute("address", address);
             doGet(req, resp);
         }
     }

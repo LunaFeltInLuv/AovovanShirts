@@ -56,4 +56,28 @@ public class CategoryDAO {
         }
         return false;
     }
+    public boolean addCategoryToProducts(String categoryName, String[] productIds) {
+        if (productIds == null || productIds.length == 0 || categoryName == null || categoryName.trim().isEmpty()) {
+            return false;
+        }
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < productIds.length; i++) {
+            placeholders.append("?");
+            if (i < productIds.length - 1) {
+                placeholders.append(",");
+            }
+        }
+        String sql = "UPDATE products SET category = ? WHERE id IN (" + placeholders.toString() + ")";
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, categoryName.trim());
+            for (int i = 0; i < productIds.length; i++) {
+                ps.setInt(i + 2, Integer.parseInt(productIds[i]));
+            }
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

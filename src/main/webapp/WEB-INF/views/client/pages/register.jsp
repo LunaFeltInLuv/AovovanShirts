@@ -160,36 +160,82 @@
                         </div>
                     </c:if>
 
-                    <form action="<c:url value='/register' />" method="post">
+                    <form action="<c:url value='/register' />" method="post" id="registerForm" onsubmit="return validateRegisterForm()">
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <input type="text" name="username" class="form-control form-control-modern" placeholder="Tên đăng nhập" required autofocus>
+                                <input type="text" name="username" class="form-control form-control-modern" placeholder="Tên đăng nhập" value="<c:out value='${username}'/>" required autofocus>
                             </div>
                             <div class="col-md-6">
-                                <input type="password" name="password" class="form-control form-control-modern" placeholder="Mật khẩu" required>
+                                <input type="text" name="name" class="form-control form-control-modern" placeholder="Họ và tên" value="<c:out value='${name}'/>" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6 position-relative">
+                                <input type="password" id="password" name="password" class="form-control form-control-modern pe-5" placeholder="Mật khẩu" required>
+                                <button type="button" class="btn border-0 position-absolute end-0 top-50 translate-middle-y me-3 text-muted p-0 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: transparent; z-index: 10;" onclick="togglePasswordVisibility('password', this)">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="col-md-6 position-relative">
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-modern pe-5" placeholder="Xác nhận mật khẩu" required>
+                                <button type="button" class="btn border-0 position-absolute end-0 top-50 translate-middle-y me-3 text-muted p-0 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: transparent; z-index: 10;" onclick="togglePasswordVisibility('confirmPassword', this)">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         
-                        <div class="form-group mb-3">
-                            <input type="text" name="name" class="form-control form-control-modern" placeholder="Họ và tên" required>
-                        </div>
-                        
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <input type="text" name="phone" class="form-control form-control-modern" placeholder="Số điện thoại" required>
+                                <input type="text" name="phone" class="form-control form-control-modern" placeholder="Số điện thoại" value="<c:out value='${phone}'/>" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="email" name="email" class="form-control form-control-modern" placeholder="Email" required>
+                                <input type="email" name="email" class="form-control form-control-modern" placeholder="Email" value="<c:out value='${email}'/>" required>
                             </div>
                         </div>
                         
                         <div class="form-group mb-4">
-                            <input type="text" name="address" class="form-control form-control-modern" placeholder="Địa chỉ giao hàng (Tùy chọn)">
+                            <input type="text" name="address" class="form-control form-control-modern" placeholder="Địa chỉ giao hàng (Tùy chọn)" value="<c:out value='${address}'/>">
                         </div>
 
                         <button type="submit" class="btn btn-modern w-100 mb-4">TẠO TÀI KHOẢN</button>
 
                     </form>
+                    
+                    <script>
+                        function validateRegisterForm() {
+                            const pwd = document.getElementById('password').value;
+                            const confirmPwd = document.getElementById('confirmPassword').value;
+                            if (pwd !== confirmPwd) {
+                                alert("Mật khẩu xác nhận không khớp. Vui lòng kiểm tra lại!");
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        function togglePasswordVisibility(inputId, btn) {
+                            const input = document.getElementById(inputId);
+                            if (!input) return;
+                            const isPassword = input.type === 'password';
+                            input.type = isPassword ? 'text' : 'password';
+                            btn.innerHTML = isPassword ? `
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.018 10.018 0 014.122-.988c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18" />
+                                </svg>
+                            ` : `
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            `;
+                        }
+                    </script>
                     
                     <div class="text-center mt-auto pb-4">
                         <p class="text-muted">Đã có tài khoản? <a href="<c:url value='/login' />" class="auth-link">Đăng nhập</a>.</p>

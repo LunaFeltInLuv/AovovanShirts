@@ -211,8 +211,14 @@
                         <div class="form-group mb-4">
                             <input type="text" name="username" class="form-control form-control-modern" placeholder="Tên đăng nhập" required autofocus>
                         </div>
-                        <div class="form-group mb-4">
-                            <input type="password" name="password" class="form-control form-control-modern" placeholder="Mật khẩu" required>
+                        <div class="form-group mb-4 position-relative">
+                            <input type="password" id="loginPassword" name="password" class="form-control form-control-modern pe-5" placeholder="Mật khẩu" required>
+                            <button type="button" class="btn border-0 position-absolute end-0 top-50 translate-middle-y me-2 text-muted p-0 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: transparent; z-index: 10;" onclick="togglePasswordVisibility('loginPassword', this)">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
                         </div>
                         
                         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -252,6 +258,25 @@
                         </div>
 
                     </form>
+                    
+                    <script>
+                        function togglePasswordVisibility(inputId, btn) {
+                            const input = document.getElementById(inputId);
+                            if (!input) return;
+                            const isPassword = input.type === 'password';
+                            input.type = isPassword ? 'text' : 'password';
+                            btn.innerHTML = isPassword ? `
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.018 10.018 0 014.122-.988c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18" />
+                                </svg>
+                            ` : `
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            `;
+                        }
+                    </script>
                     
                     <div class="text-center mt-auto">
                         <p class="text-muted">Chưa có tài khoản? <a href="<c:url value='/register' />" class="auth-link">Tạo ngay</a>.</p>

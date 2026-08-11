@@ -6,21 +6,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import dao.ProductDAO;
+import model.Product;
 import model.Category;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/admin/categories", "/admin/categories/update", "/admin/categories/delete"})
+@WebServlet(urlPatterns = {"/admin/categories", "/admin/categories/add", "/admin/categories/update", "/admin/categories/delete"})
 public class AdminCategoryServlet extends HttpServlet {
     private CategoryDAO categoryDAO = new CategoryDAO();
+    private ProductDAO productDAO = new ProductDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
         if ("/admin/categories".equals(path)) {
             List<Category> categories = categoryDAO.getAllCategories();
+            List<Product> allProducts = productDAO.getAllProductsAdmin();
             req.setAttribute("categories", categories);
+            req.setAttribute("allProducts", allProducts);
             req.setAttribute("pageTitle", "Quản lý danh mục");
             req.setAttribute("activePage", "categories");
             req.setAttribute("contentPage", "/WEB-INF/views/admin/categories/categories.jsp");
@@ -35,7 +40,13 @@ public class AdminCategoryServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String path = req.getServletPath();
 
-        if ("/admin/categories/update".equals(path)) {
+        if ("/admin/categories/add".equals(path)) {
+            String name = req.getParameter("name");
+            String[] productIds = req.getParameterValues("productIds");
+            if (name != null && !name.trim().isEmpty() && productIds != null && productIds.length > 0) {
+                categoryDAO.addCategoryToProducts(name, productIds);
+            }
+        } else if ("/admin/categories/update".equals(path)) {
             String oldName = req.getParameter("oldName");
             String newName = req.getParameter("newName");
             categoryDAO.updateCategory(oldName, newName);

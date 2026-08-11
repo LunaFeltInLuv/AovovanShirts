@@ -107,7 +107,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <form action="<c:url value='/admin/categories/add' />" method="post">
+                    <form action="<c:url value='/admin/categories/add' />" method="post" id="addCategoryForm" onsubmit="return validateAddCategory()">
                         <div class="modal-body p-4">
                             <div class="form-group mb-3">
                                 <label class="form-label font-bold text-secondary">Tên danh mục mới <span
@@ -118,7 +118,7 @@
 
                             <div class="form-group mb-0">
                                 <label class="form-label font-bold text-secondary mb-1">Gán danh mục cho các sản phẩm
-                                    hiện có (Tùy chọn):</label>
+                                    hiện có (Bắt buộc): <span class="text-danger">*</span></label>
                                 <p class="text-muted small mb-2">Bạn có thể chọn một hoặc nhiều sản phẩm dưới đây để
                                     chuyển vào danh mục mới vừa tạo.</p>
                                 <div class="border rounded-3 p-3 bg-light" style="max-height: 220px; overflow-y: auto;">
@@ -222,5 +222,14 @@
                 setTimeout(() => {
                     document.getElementById('newName').focus();
                 }, 300);
+            }
+
+            function validateAddCategory() {
+                var checkboxes = document.querySelectorAll('#addCategoryForm input[name="productIds"]:checked');
+                if (checkboxes.length === 0) {
+                    alert("Vui lòng chọn ít nhất 1 sản phẩm để tạo danh mục! (Hệ thống quản lý danh mục dựa trên sản phẩm)");
+                    return false;
+                }
+                return true;
             }
         </script>
