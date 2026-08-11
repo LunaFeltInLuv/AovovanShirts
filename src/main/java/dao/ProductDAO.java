@@ -114,6 +114,38 @@ public class ProductDAO {
         return list;
     }
 
+    public int getTotalProductsCount(String keyword, String category) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products WHERE is_active = 1 ");
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append("AND (name COLLATE Vietnamese_CI_AI LIKE ? OR description COLLATE Vietnamese_CI_AI LIKE ?) ");
+        }
+        if (category != null && !category.trim().isEmpty()) {
+            sql.append("AND category = ? ");
+        }
+
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            int paramIdx = 1;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                String kw = "%" + keyword.trim() + "%";
+                ps.setString(paramIdx++, kw);
+                ps.setString(paramIdx++, kw);
+            }
+            if (category != null && !category.trim().isEmpty()) {
+                ps.setString(paramIdx++, category.trim());
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public int addProduct(Product p) {
         String sql = "{call sp_add_product(?, ?, ?, ?, ?, ?, ?)}";
         try (Connection con = ConnectDB.getConnect();

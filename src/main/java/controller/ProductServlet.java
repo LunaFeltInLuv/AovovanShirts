@@ -48,14 +48,21 @@ public class ProductServlet extends HttpServlet {
             if (pageStr != null) {
                 try {
                     page = Integer.parseInt(pageStr);
+                    if (page < 1) page = 1;
                 } catch (NumberFormatException ignored) {}
             }
 
             List<Product> products = productDAO.searchProducts(keyword, category, page, pageSize);
+            int totalProducts = productDAO.getTotalProductsCount(keyword, category);
+            int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+            if (totalPages < 1) totalPages = 1;
+
             req.setAttribute("products", products);
             req.setAttribute("keyword", keyword);
             req.setAttribute("category", category);
             req.setAttribute("page", page);
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("totalProducts", totalProducts);
             req.setAttribute("pageTitle", "Cửa hàng sản phẩm - Áo Vớ Vẩn");
             req.setAttribute("activePage", "products");
             req.setAttribute("contentPage", "/WEB-INF/views/client/pages/products.jsp");
