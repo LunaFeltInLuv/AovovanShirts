@@ -99,6 +99,41 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination -->
+            <c:if test="${totalPages > 1}">
+                <c:set var="adminCatParam" value="" />
+                <c:if test="${not empty selectedCategory}">
+                    <c:set var="adminCatParam" value="&category=${selectedCategory}" />
+                </c:if>
+
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                    <span class="text-muted small font-semibold">
+                        Hiển thị trang <strong>${page}</strong> / <strong>${totalPages}</strong> (Tổng <strong>${totalProducts}</strong> sản phẩm)
+                    </span>
+                    <nav aria-label="Admin product list pagination">
+                        <ul class="pagination pagination-sm mb-0 gap-1">
+                            <li class="page-item ${page <= 1 ? 'disabled' : ''}">
+                                <a class="page-link shadow-sm rounded-2" href="<c:url value='/admin/products'/>?page=${page - 1}${adminCatParam}">
+                                    <i class="bi bi-chevron-left me-1"></i> Trước
+                                </a>
+                            </li>
+
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${i == page ? 'active' : ''}">
+                                    <a class="page-link shadow-sm rounded-2 font-bold ${i == page ? 'bg-primary text-white' : 'bg-light text-dark'}" href="<c:url value='/admin/products'/>?page=${i}${adminCatParam}">${i}</a>
+                                </li>
+                            </c:forEach>
+
+                            <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
+                                <a class="page-link shadow-sm rounded-2" href="<c:url value='/admin/products'/>?page=${page + 1}${adminCatParam}">
+                                    Sau <i class="bi bi-chevron-right ms-1"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </c:if>
         </div>
     </div>
 </section>

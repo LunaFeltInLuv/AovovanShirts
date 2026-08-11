@@ -125,11 +125,12 @@
                 let max = parseInt(input.max) || 999;
 
                 let newVal = val + delta;
-                if (newVal >= min && newVal <= max) {
-                    input.value = newVal;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
-                }
+                if (newVal < min) newVal = min;
+                if (newVal > max) newVal = max;
+
+                input.value = newVal;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
             document.addEventListener('DOMContentLoaded', function () {
@@ -147,7 +148,7 @@
                     let grandTotal = 0;
                     qtyInputs.forEach(input => {
                         const price = parseFloat(input.dataset.price) || 0;
-                        let qty = parseInt(input.value) || 0;
+                        let qty = parseInt(input.value) || 1;
                         if (qty < 1) qty = 1;
                         const lineTotal = price * qty;
 
@@ -211,8 +212,28 @@
                         });
                 }
 
+                function validateAndFixInput(input) {
+                    let val = parseInt(input.value);
+                    let max = parseInt(input.max) || 999;
+                    if (isNaN(val) || val < 1) {
+                        input.value = 1;
+                    } else if (val > max) {
+                        input.value = max;
+                    }
+                }
+
                 qtyInputs.forEach(input => {
                     input.addEventListener('input', function () {
+                        // If user types 0 or negative number, immediately reset to 1
+                        let val = parseInt(input.value);
+                        if (!isNaN(val) && val < 1) {
+                            input.value = 1;
+                        }
+                        let max = parseInt(input.max);
+                        if (!isNaN(val) && max && val > max) {
+                            input.value = max;
+                        }
+
                         calculateTotals();
                         const productId = input.dataset.productId;
                         clearTimeout(debounceTimers[productId]);
@@ -222,7 +243,16 @@
                         }, 350);
                     });
 
+                    input.addEventListener('blur', function () {
+                        validateAndFixInput(input);
+                        calculateTotals();
+                        const productId = input.dataset.productId;
+                        clearTimeout(debounceTimers[productId]);
+                        syncCartItem(input);
+                    });
+
                     input.addEventListener('change', function () {
+                        validateAndFixInput(input);
                         calculateTotals();
                         const productId = input.dataset.productId;
                         clearTimeout(debounceTimers[productId]);

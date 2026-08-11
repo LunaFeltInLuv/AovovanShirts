@@ -55,27 +55,36 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </c:forEach>
                 </div>
 
                 <!-- Pagination -->
                 <c:if test="${totalPages > 1}">
+                    <c:set var="queryParams" value="" />
+                    <c:if test="${not empty keyword}">
+                        <c:set var="queryParams" value="${queryParams}&keyword=${keyword}" />
+                    </c:if>
+                    <c:if test="${not empty category}">
+                        <c:set var="queryParams" value="${queryParams}&category=${category}" />
+                    </c:if>
+
                     <nav aria-label="Product list pagination" class="mt-5">
                         <ul class="pagination justify-content-center flex-wrap gap-1">
                             <li class="page-item ${page <= 1 ? 'disabled' : ''}">
-                                <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2" href="<c:url value='/products'><c:param name='page' value='${page - 1}'/><c:if test='${not empty keyword}'><c:param name='keyword' value='${keyword}'/></c:if><c:if test='${not empty category}'><c:param name='category' value='${category}'/></c:if></c:url>">
+                                <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2" href="<c:url value='/products'/>?page=${page - 1}${queryParams}">
                                     <i class="bi bi-chevron-left me-1"></i> Trước
                                 </a>
                             </li>
 
                             <c:forEach var="i" begin="1" end="${totalPages}">
                                 <li class="page-item ${i == page ? 'active' : ''}">
-                                    <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2 font-bold ${i == page ? 'bg-warning text-dark' : 'bg-white text-dark'}" href="<c:url value='/products'><c:param name='page' value='${i}'/><c:if test='${not empty keyword}'><c:param name='keyword' value='${keyword}'/></c:if><c:if test='${not empty category}'><c:param name='category' value='${category}'/></c:if></c:url>">${i}</a>
+                                    <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2 font-bold ${i == page ? 'bg-warning text-dark' : 'bg-white text-dark'}" href="<c:url value='/products'/>?page=${i}${queryParams}">${i}</a>
                                 </li>
                             </c:forEach>
 
                             <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
-                                <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2" href="<c:url value='/products'><c:param name='page' value='${page + 1}'/><c:if test='${not empty keyword}'><c:param name='keyword' value='${keyword}'/></c:if><c:if test='${not empty category}'><c:param name='category' value='${category}'/></c:if></c:url>">
+                                <a class="page-link border-0 shadow-sm rounded-3 px-3 py-2" href="<c:url value='/products'/>?page=${page + 1}${queryParams}">
                                     Sau <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             </li>

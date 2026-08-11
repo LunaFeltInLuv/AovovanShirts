@@ -120,6 +120,9 @@ public class CartServlet extends HttpServlet {
             try {
                 int productId = Integer.parseInt(req.getParameter("productId"));
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
+                if (quantity < 1) {
+                    quantity = 1;
+                }
                 updated = cartDAO.updateCartItemQuantity(cartId, productId, quantity);
             } catch (Exception e) {
                 e.printStackTrace();

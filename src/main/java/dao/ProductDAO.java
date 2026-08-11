@@ -44,12 +44,24 @@ public class ProductDAO {
         return list;
     }
 
-    public List<Product> getProductsByCategoryAdmin(String category) {
+    public List<Product> getProductsAdminPaginated(String category, int page, int pageSize) {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE category = ? ORDER BY created_at DESC";
+        StringBuilder sql = new StringBuilder("SELECT * FROM products ");
+        if (category != null && !category.trim().isEmpty()) {
+            sql.append("WHERE category = ? ");
+        }
+        sql.append("ORDER BY id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
         try (Connection con = ConnectDB.getConnect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, category);
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            int paramIdx = 1;
+            if (category != null && !category.trim().isEmpty()) {
+                ps.setString(paramIdx++, category.trim());
+            }
+            int offset = (page - 1) * pageSize;
+            ps.setInt(paramIdx++, offset);
+            ps.setInt(paramIdx, pageSize);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(mapResultSetToProduct(rs));
@@ -59,6 +71,28 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public int getTotalProductsAdminCount(String category) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products ");
+        if (category != null && !category.trim().isEmpty()) {
+            sql.append("WHERE category = ? ");
+        }
+
+        try (Connection con = ConnectDB.getConnect();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            if (category != null && !category.trim().isEmpty()) {
+                ps.setString(1, category.trim());
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public Product getProductById(int id) {

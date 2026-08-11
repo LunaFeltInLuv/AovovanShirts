@@ -34,14 +34,29 @@ public class AdminProductServlet extends HttpServlet {
         String path = req.getServletPath();
         if ("/admin/products".equals(path)) {
             String category = req.getParameter("category");
-            List<Product> products;
-            if (category != null && !category.trim().isEmpty()) {
-                products = productDAO.getProductsByCategoryAdmin(category.trim());
-                req.setAttribute("selectedCategory", category.trim());
-            } else {
-                products = productDAO.getAllProductsAdmin();
+            String pageStr = req.getParameter("page");
+            int page = 1;
+            int pageSize = 10;
+            if (pageStr != null) {
+                try {
+                    page = Integer.parseInt(pageStr);
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException ignored) {}
             }
+
+            List<Product> products = productDAO.getProductsAdminPaginated(category, page, pageSize);
+            int totalProducts = productDAO.getTotalProductsAdminCount(category);
+            int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+            if (totalPages < 1) totalPages = 1;
+
+            if (category != null && !category.trim().isEmpty()) {
+                req.setAttribute("selectedCategory", category.trim());
+            }
+
             req.setAttribute("products", products);
+            req.setAttribute("page", page);
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("totalProducts", totalProducts);
             req.setAttribute("pageTitle", "Quản lý sản phẩm");
             req.setAttribute("activePage", "products");
             req.setAttribute("contentPage", "/WEB-INF/views/admin/products/products.jsp");
